@@ -1,0 +1,19 @@
+# --- dependencies (reinstall with: npm install)
+node_modules/
+
+# --- render outputs, intermediate mixes/stems and QA stills (rebuilt by the scripts)
+build/
+_stills/
+
+# --- decode caches the audio scripts write next to the voice files
+assets/audio/**/*.mp3.*
+assets/audio/**/*.wav.wav
+
+# --- Python / OS / editor noise
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/

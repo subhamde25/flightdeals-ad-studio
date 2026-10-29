@@ -1,0 +1,814 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<title>FlightDeals 16:9</title>
+<link rel="stylesheet" href="../assets/fonts/local.css">
+<style>
+:root{--ink:#050B1F;--navy:#0C1E45;--teal:#239587;--teal2:#2EC4B0;--mint:#5EEAD4;--sky:#0EA5E9;--sky2:#38BDF8;--gold:#FFC21A;--gold2:#F5C451;--coral:#F4775E;--red:#FF4D5E;--muted:#5B6B82;--line:#E3E8EF;--bg:#F7FAFC}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#050B1F}
+#stage{position:absolute;inset:0;overflow:hidden;font-family:Manrope,sans-serif;color:#fff}
+.A{position:absolute;left:0;top:0}
+.full{position:absolute;left:0;top:0;width:1920px;height:1080px}
+.disp{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;line-height:.92;white-space:nowrap}
+.bgl{position:absolute;inset:0}
+#bgA{background:radial-gradient(1500px 1000px at 50% 45%,#12306B 0%,#0A1D45 48%,#040B22 100%)}
+#bgDark{background:radial-gradient(1300px 900px at 50% 45%,#2A2E3A 0%,#12141B 60%,#07080C 100%)}
+#bgTeal{background:radial-gradient(1400px 900px at 50% 50%,#2EC4B0 0%,#1C8C80 45%,#0B3D45 100%)}
+#bgSky{background:radial-gradient(1400px 900px at 50% 50%,#38BDF8 0%,#1E6BFF 45%,#0A2A6B 100%)}
+#bgGold{background:radial-gradient(1400px 900px at 50% 50%,#FFD35A 0%,#F59E3B 45%,#8A3A1C 100%)}
+#cam{transform-origin:0 0;will-change:transform,filter}
+.big,.hook,.wm,.sticker,.cnt,.stampbox,#logo{will-change:transform}
+#flash{background:#fff;opacity:0}
+#vig{background:radial-gradient(1500px 1000px at 50% 50%,transparent 58%,rgba(0,0,0,.5) 100%)}
+#grain{mix-blend-mode:overlay;opacity:.06}
+/* ---------- browser ---------- */
+#browser{width:1440px;height:810px;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 60px 160px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08);color:#0C1E45}
+#tabstrip{position:absolute;left:0;top:0;width:1440px;height:56px;background:#DCE2EA}
+.dots{position:absolute;left:22px;top:21px;display:flex;gap:9px}
+.dots i{width:14px;height:14px;border-radius:50%;display:block}
+.tab{position:absolute;top:10px;height:46px;border-radius:12px 12px 0 0;background:#EEF2F6;display:flex;align-items:center;gap:9px;padding:0 12px;overflow:hidden;white-space:nowrap;font-size:15px;font-weight:600;color:#334155;border-right:1px solid #C9D1DB}
+.tab.on{background:#fff;color:#0C1E45}
+.tab .fav{width:18px;height:18px;border-radius:5px;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.tab .fav img{width:20px}
+.tab .tt{overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.tab .x{flex:none;color:#94A3B8;font-size:16px}
+#toolbar{position:absolute;left:0;top:56px;width:1440px;height:60px;background:#fff;border-bottom:1px solid #E5E9F0;display:flex;align-items:center;gap:18px;padding:0 20px}
+#toolbar .nb{display:flex;gap:16px;color:#64748B}
+#toolbar .nb svg{width:22px;height:22px}
+#omni{flex:1;height:40px;border-radius:20px;background:#F1F4F8;display:flex;align-items:center;gap:10px;padding:0 18px;font-size:17px;font-weight:600;color:#334155}
+#omni svg{width:16px;height:16px;color:#64748B}
+#content{position:absolute;left:0;top:116px;width:1440px;height:694px;overflow:hidden;background:#fff}
+.pg{position:absolute;left:0;top:0;width:1440px;min-height:694px;background:#fff}
+/* generic search */
+#pgSearch{display:flex;flex-direction:column;align-items:center;padding-top:120px}
+.sbig{width:820px;height:64px;border-radius:32px;border:1.5px solid #DADFE6;box-shadow:0 4px 18px rgba(0,0,0,.08);display:flex;align-items:center;gap:16px;padding:0 26px;font-size:24px;font-weight:600;color:#1F2937}
+.sbig svg{width:24px;height:24px;color:#94A3B8}
+.caret{display:inline-block;width:2px;height:28px;background:#0C1E45;vertical-align:middle;margin-left:1px}
+.res{width:820px;margin-top:34px}
+.res .r{margin-bottom:22px}
+.res .u{font-size:14px;color:#1E8E3E;font-weight:600}
+.res .h{font-size:22px;color:#1A0DAB;font-weight:600;margin-top:3px}
+.bar{height:11px;border-radius:6px;background:#E5E7EB;margin-top:8px}
+/* embassy */
+#pgEmb{background:#F3F3F1;color:#333}
+.embh{height:86px;background:#4B5563;display:flex;align-items:center;gap:18px;padding:0 40px;color:#fff;font-family:Georgia,serif;font-size:28px}
+.crest{width:54px;height:54px;border-radius:50%;background:#C9A227;border:3px solid #fff}
+.embnav{height:40px;background:#6B7280;display:flex;gap:30px;padding:0 40px;align-items:center;font-size:14px;color:#E5E7EB;font-family:Georgia,serif}
+.embb{display:flex;gap:30px;padding:28px 40px}
+.embm{flex:1}
+.embm h2{font-family:Georgia,serif;font-size:30px;color:#1F2937;margin-bottom:16px}
+.tl{height:10px;background:#C7CBD1;border-radius:2px;margin:9px 0}
+.pdf{display:inline-flex;align-items:center;gap:8px;color:#1D4ED8;font-size:16px;text-decoration:underline;margin:10px 18px 0 0}
+.pdf b{background:#DC2626;color:#fff;font-size:11px;padding:2px 5px;border-radius:3px;text-decoration:none}
+.embs{width:330px}
+.box{border:1px solid #C7CBD1;background:#fff;padding:16px;margin-bottom:16px}
+.tbl{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px}
+.tbl td{border:1px solid #C7CBD1;padding:8px;color:#6B7280}
+/* sim shop */
+#pgSim{background:#fff}
+.simban{height:170px;background:repeating-linear-gradient(45deg,#FFD400 0 30px,#FFC400 30px 60px);display:flex;align-items:center;justify-content:space-between;padding:0 60px}
+.simban .t1{font-family:'Space Grotesk';font-weight:700;font-size:56px;color:#D7081B;text-shadow:3px 3px 0 #fff}
+.simban .t2{font-size:22px;font-weight:800;color:#111}
+.blink{background:#D7081B;color:#fff;font-weight:800;font-size:22px;padding:12px 22px;border-radius:8px;transform:rotate(-4deg)}
+.simrow{display:flex;gap:26px;padding:34px 60px}
+.simc{flex:1;border:3px solid #FF4D00;border-radius:14px;padding:22px;text-align:center}
+.simc .sp{font-family:'Space Grotesk';font-weight:700;font-size:44px;color:#D7081B}
+.simc .ss{font-size:16px;color:#555;font-weight:700}
+.simc .sb{margin-top:14px;background:#FF4D00;color:#fff;font-weight:800;padding:12px;border-radius:8px}
+.chatpop{position:absolute;right:30px;bottom:30px;width:300px;border-radius:16px;background:#7C3AED;color:#fff;padding:18px;font-weight:700;font-size:17px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+/* hotel app */
+#pgHapp{background:#F5F5F7}
+.happh{height:70px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 40px;font-weight:800;font-size:24px;color:#E11D48}
+.hlist{padding:26px 40px;display:flex;flex-direction:column;gap:18px}
+.hrow{height:150px;background:#fff;border-radius:12px;display:flex;gap:20px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.hrow .im{width:200px;border-radius:8px;background:linear-gradient(135deg,#94A3B8,#CBD5E1)}
+.popw{position:absolute;border-radius:12px;padding:16px 22px;font-weight:800;font-size:20px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+/* ---------- FlightDeals pages ---------- */
+.fdh{height:72px;background:#0C1E45;display:flex;align-items:center;padding:0 30px;gap:30px;color:#fff}
+.fdlogo{display:flex;align-items:center;gap:10px}
+.fdlogo img{width:52px}
+.fdlogo .n{font-family:'Space Grotesk';font-weight:700;font-size:24px;line-height:1}
+.fdlogo .n span{color:#2EC4B0}
+.fdlogo .s{font-size:9px;letter-spacing:.18em;opacity:.75;margin-top:4px;font-weight:700}
+.fdnav{display:flex;gap:6px;flex:1;margin-left:20px}
+.fdnav span{font-size:16px;font-weight:600;padding:8px 14px;border-radius:10px;color:#E2E8F0}
+.fdnav span.on{background:rgba(255,255,255,.14);color:#fff}
+.fdr{display:flex;gap:12px;align-items:center}
+.inr{border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:700}
+.sign{background:#239587;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:800}
+#pgHome .hero{position:relative;height:622px;overflow:hidden}
+#pgHome .hero img{position:absolute;width:100%;height:100%;object-fit:cover}
+#pgHome .hero .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,19,48,.85),rgba(7,19,48,.25))}
+#pgHome .hin{position:absolute;left:60px;top:60px;color:#fff}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);font-size:14px;font-weight:700}
+#pgHome h1{font-family:'Space Grotesk';font-size:64px;line-height:1.02;margin-top:18px;width:820px}
+#pgHome .hs{font-size:20px;margin-top:16px;opacity:.9;width:760px}
+.scard{position:absolute;left:60px;top:390px;width:1320px;height:170px;background:#fff;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:22px 26px;color:#0C1E45}
+.vhero{background:#0C1E45;color:#fff;height:200px;padding:30px 40px}
+.vhero h1{font-family:'Space Grotesk';font-size:44px;margin-top:12px;display:flex;align-items:center;gap:12px}
+.vhero h1 svg{width:44px;height:44px;color:#2EC4B0}
+.vhero p{font-size:17px;opacity:.85;margin-top:8px}
+.vform{position:absolute;left:40px;top:250px;width:1360px;height:110px;background:#fff;border-radius:18px;box-shadow:0 14px 40px rgba(12,30,69,.18);display:flex;align-items:flex-end;gap:16px;padding:16px 22px 18px}
+.vf{flex:1}
+.vf .l{font-size:13px;color:#5B6B82;font-weight:600;margin-bottom:6px}
+.vf .v{height:50px;border:1.5px solid #E3E8EF;border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:18px;font-weight:700}
+.vf .v svg.flag{width:30px;height:20px;border-radius:3px}
+.vbtn{height:52px;padding:0 26px;border-radius:12px;background:#239587;color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;gap:10px;flex:none}
+.spin{width:24px;height:24px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff}
+.vres{position:absolute;left:40px;top:384px;width:1360px;background:#fff;border:1.5px solid #E3E8EF;border-radius:20px;padding:24px 28px;box-shadow:0 10px 30px rgba(12,30,69,.08)}
+.vr1{display:flex;align-items:center;gap:16px}
+.vr1 .ri{width:52px;height:52px;border-radius:14px;background:#FFF4E5;color:#E07B12;display:flex;align-items:center;justify-content:center}
+.vr1 .ri svg{width:30px;height:30px}
+.vr1 .k{font-size:15px;font-weight:700;color:#E07B12}
+.vr1 .t{font-family:'Space Grotesk';font-weight:700;font-size:30px}
+.vr1 .tg{margin-left:auto;border:1.5px solid #F7C99B;color:#C2610C;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:700}
+.vstats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:18px}
+.vst{border:1.5px solid #E3E8EF;border-radius:12px;padding:10px 12px}
+.vst .k{font-size:12px;color:#5B6B82;font-weight:600}
+.vst .v{font-size:16px;font-weight:800;margin-top:3px}
+.vdocs{display:flex;gap:34px;margin-top:18px;font-size:17px;font-weight:700;color:#24324A}
+.vdoc{display:flex;align-items:center;gap:10px}
+.vdoc .ck{width:30px;height:30px;border-radius:50%;background:#E6F6F3;color:#239587;display:flex;align-items:center;justify-content:center}
+.vdoc .ck svg{width:20px;height:20px}
+/* esim */
+.ehero{margin:24px 40px 0;border-radius:24px;background:linear-gradient(135deg,#E8F7F4,#EEF4FB);padding:30px 36px;height:250px}
+.ehero .chipt{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:#D7F0EB;color:#1C7A6F;font-size:14px;font-weight:800}
+.ehero h1{font-family:'Space Grotesk';font-size:46px;margin-top:12px}
+.ehero p{font-size:17px;color:#475569;margin-top:6px;width:760px}
+.esearch{margin-top:16px;width:520px;height:48px;border-radius:12px;border:1.5px solid #D5DEE8;background:#fff;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:16px;color:#94A3B8;font-weight:600}
+.esearch svg{width:18px;height:18px}
+.egrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:22px 40px}
+.ec{border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 6px 20px rgba(12,30,69,.12);border:1px solid #E8EDF3}
+.ec img{width:100%;height:150px;object-fit:cover;display:block}
+.ec .eb{display:flex;justify-content:space-between;align-items:flex-end;padding:12px 16px}
+.ec .en{font-size:18px;font-weight:800}
+.ec .es{font-size:13px;color:#5B6B82;font-weight:600}
+.ec .ep{font-family:'Space Grotesk';font-weight:700;font-size:24px;color:#239587;text-align:right;line-height:1}
+.ec .ep small{display:block;font-family:Manrope;font-size:11px;color:#94A3B8;font-weight:600}
+.ptitle{display:flex;align-items:center;gap:16px;padding:24px 40px 0}
+.ptitle img{width:64px;height:64px;border-radius:14px;object-fit:cover}
+.ptitle .a{font-family:'Space Grotesk';font-weight:700;font-size:36px}
+.ptitle .b{font-size:15px;color:#5B6B82;font-weight:600}
+.chips{display:flex;gap:10px;padding:18px 40px}
+.chips span{padding:8px 18px;border-radius:999px;border:1.5px solid #E3E8EF;font-size:16px;font-weight:700;color:#334155;background:#fff}
+.chips span.on{border-color:#239587;color:#1C7A6F;background:#E6F6F3}
+.plist{position:relative;margin:0 40px;height:400px}
+.pc{position:absolute;left:0;width:1360px;height:118px;border:1.5px solid #E3E8EF;border-radius:18px;background:#fff;display:flex;align-items:center;padding:0 26px;gap:20px;box-shadow:0 4px 14px rgba(12,30,69,.06)}
+.pc .bd{font-size:12px;font-weight:800;color:#fff;padding:4px 10px;border-radius:999px}
+.pc .nm{font-size:20px;font-weight:800}
+.pc .ft{font-size:14px;color:#5B6B82;font-weight:600;margin-top:4px}
+.pc .pr{margin-left:auto;text-align:right}
+.pc .pr s{font-size:14px;color:#94A3B8}
+.pc .pr b{display:block;font-family:'Space Grotesk';font-size:34px;color:#239587;line-height:1}
+.pc .buy{height:46px;padding:0 22px;border-radius:12px;background:#239587;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center}
+/* hotels */
+.hhero{background:#0C1E45;color:#fff;height:230px;padding:26px 40px}
+.hhero h1{font-family:'Space Grotesk';font-size:40px;display:flex;align-items:center;gap:12px}
+.hhero h1 svg{width:40px;height:40px;color:#2EC4B0}
+.hhero p{font-size:16px;opacity:.85;margin-top:6px}
+.hform{margin-top:18px;height:96px;border-radius:16px;background:#fff;display:flex;align-items:flex-end;gap:14px;padding:14px 18px;color:#0C1E45}
+.prog{position:absolute;left:40px;top:322px;width:1360px;height:8px;border-radius:4px;background:#EDF2F7;overflow:hidden}
+.progl{position:absolute;left:40px;top:340px;font-size:15px;font-weight:700;color:#5B6B82}
+.prog i{display:block;height:100%;background:#239587;border-radius:4px}
+.hres{position:absolute;left:0;top:302px;width:1440px;height:760px;background:#fff}
+.hrhead{display:flex;align-items:center;gap:14px;padding:18px 40px 10px}
+.hrhead .c{font-size:18px;font-weight:700;color:#334155}
+.tog{margin-left:auto;display:flex;border:1.5px solid #E3E8EF;border-radius:12px;overflow:hidden}
+.tog span{padding:8px 16px;font-size:15px;font-weight:800;color:#334155;display:flex;gap:6px;align-items:center}
+.tog span svg{width:16px;height:16px}
+.tog span.on{background:#239587;color:#fff}
+.fpanel{position:absolute;left:40px;top:70px;width:300px;border:1.5px solid #E3E8EF;border-radius:18px;padding:18px;background:#fff}
+.fpanel .fh{font-weight:800;font-size:18px;margin-bottom:12px}
+.fpanel .fk{font-size:14px;font-weight:800;margin-top:14px}
+.slider{height:6px;border-radius:3px;background:#239587;margin-top:12px;position:relative}
+.slider i{position:absolute;left:0;top:-7px;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid #239587}
+.cbx{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#334155;margin-top:10px}
+.cbx b{width:20px;height:20px;border-radius:6px;border:2px solid #CBD5E1;display:flex;align-items:center;justify-content:center;color:#fff}
+.cbx b.on{background:#239587;border-color:#239587}
+.cbx b svg{width:14px;height:14px}
+.hcards{position:absolute;left:370px;top:70px;width:1030px}
+.hc{position:relative;height:158px;border:1.5px solid #E3E8EF;border-radius:18px;background:#fff;display:flex;gap:18px;padding:12px;margin-bottom:14px;box-shadow:0 4px 14px rgba(12,30,69,.06)}
+.hc img{width:220px;height:132px;border-radius:12px;object-fit:cover}
+.hc .st{color:#F5B301;display:flex;gap:2px}
+.hc .st svg{width:16px;height:16px}
+.hc .nm{font-family:'Space Grotesk';font-weight:700;font-size:22px;margin-top:4px}
+.hc .lc{font-size:13px;color:#5B6B82;font-weight:600}
+.hc .am{display:flex;gap:8px;margin-top:8px}
+.hc .am span{font-size:12px;font-weight:800;color:#1C7A6F;background:#E6F6F3;padding:4px 10px;border-radius:999px}
+.hc .rt{position:absolute;left:250px;top:12px}
+.hc .pr{margin-left:auto;text-align:right;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding-right:8px}
+.hc .old{position:relative;font-size:15px;color:#94A3B8;font-weight:700}
+.hc .old i{position:absolute;left:-3px;right:-3px;top:50%;height:2.5px;background:#FF4D5E;transform-origin:0 50%}
+.hc .nw{font-family:'Space Grotesk';font-weight:700;font-size:32px;line-height:1.05}
+.hc .tt{font-size:12px;color:#5B6B82;font-weight:600}
+.hc .bk{margin-top:8px;height:40px;padding:0 18px;border-radius:10px;background:#239587;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center}
+.hc .off{position:absolute;left:12px;top:12px;background:#F4775E;color:#fff;font-weight:800;font-size:15px;padding:5px 10px;border-radius:10px}
+.hc .gr{position:absolute;right:170px;top:16px;width:46px;height:46px;border-radius:12px;background:#239587;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;font-size:20px}
+#map{position:absolute;left:370px;top:70px;width:1030px;height:520px;border-radius:18px;overflow:hidden;background:#CFE8EC;border:1.5px solid #E3E8EF}
+.mpin{position:absolute;padding:8px 14px;border-radius:999px;background:#0C1E45;color:#fff;font-weight:800;font-size:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);white-space:nowrap}
+.mpin:after{content:'';position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-top-color:#0C1E45;border-bottom:0}
+.mpin.hot{background:#239587}
+.mpin.hot:after{border-top-color:#239587}
+/* ---------- overlays ---------- */
+#cursor{width:40px;height:50px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+#cring{width:60px;height:60px;border-radius:50%;border:4px solid #2EC4B0}
+.sticker{font-family:'Space Grotesk';font-weight:700;font-size:96px;padding:10px 34px 16px;border-radius:18px;color:#fff;white-space:nowrap;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.cap{font-weight:800;font-size:54px;white-space:nowrap;padding:12px 30px 16px 30px;border-radius:24px;background:rgba(6,14,38,.82);backdrop-filter:blur(12px);border:2px solid rgba(255,255,255,.12);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.cap .w:last-child{margin-right:0}
+#hookBg{overflow:hidden}
+#hookBg img{width:1920px;height:1080px;object-fit:cover;transform-origin:50% 50%}
+#hookBg .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,31,.55),rgba(5,11,31,.35) 45%,rgba(5,11,31,.85))}
+.hook{font-size:170px;color:#fff;text-shadow:0 12px 60px rgba(0,0,0,.5)}
+.hook .q{color:var(--mint)}
+#hkSearch{width:980px;height:104px;border-radius:52px;background:rgba(255,255,255,.16);backdrop-filter:blur(18px);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;gap:22px;padding:0 40px;font-size:40px;font-weight:700;color:#fff;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+#hkSearch svg{width:40px;height:40px;color:rgba(255,255,255,.8)}
+#hkSearch .caret{background:#fff;height:44px;width:3px}
+.cap .w{display:inline-block;margin-right:16px}
+.cap .hl{color:var(--mint)}
+.big{font-size:330px;color:#fff;text-shadow:0 30px 90px rgba(0,0,0,.35)}
+.cnt{font-size:220px;color:var(--mint)}
+.cntl{font-size:44px;font-weight:800;color:#fff;white-space:nowrap}
+.stampbox{border:10px solid var(--c);color:var(--c);border-radius:28px;padding:14px 40px 18px;text-align:center;font-family:'Space Grotesk';font-weight:700;background:rgba(5,11,31,.7);backdrop-filter:blur(8px);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.stampbox .b1{font-size:110px;line-height:1}
+.stampbox .b2{font-size:34px;letter-spacing:.18em;margin-top:4px;font-family:Manrope;font-weight:800}
+#logo{width:430px}
+.wm{font-size:150px;color:#fff}
+.wm .in{color:var(--teal2)}
+#tagline{font-size:34px;font-weight:800;letter-spacing:.32em;color:rgba(255,255,255,.85);white-space:nowrap}
+#subtag{font-size:40px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
+#subtag b{color:var(--mint)}
+#cta{width:560px;height:96px;border-radius:999px;background:linear-gradient(135deg,#2EC4B0,#239587);display:flex;align-items:center;justify-content:center;gap:16px;font-size:36px;font-weight:800;white-space:nowrap;box-shadow:0 20px 60px rgba(46,196,176,.45);overflow:hidden;position:relative}
+#cta svg{width:36px;height:36px}
+#shine{position:absolute;top:-20px;bottom:-20px;width:110px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg)}
+.fchip{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.22);font-size:24px;font-weight:800}
+.fchip svg{width:26px;height:26px;color:var(--mint)}
+#ring{width:200px;height:200px;border-radius:50%;border:14px solid var(--mint);opacity:0}
+.mont{width:300px;height:400px;border-radius:26px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.mont img{width:100%;height:100%;object-fit:cover}
+</style></head>
+<body>
+<div id="stage">
+  <div class="bgl" id="bgA"></div><div class="bgl" id="bgDark"></div><div class="bgl" id="bgTeal"></div><div class="bgl" id="bgSky"></div><div class="bgl" id="bgGold"></div>
+  <canvas id="stars" class="full" width="1920" height="1080"></canvas>
+  <svg id="flight" class="full" viewBox="0 0 1920 1080">
+    <path id="fpath" d="M -100 900 C 400 980, 700 700, 1000 760 S 1600 520, 2050 160" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 20"/>
+    <g id="fplane"><g transform="translate(-30,-30) scale(2.5)" style="color:#FFC21A"><path fill="currentColor" d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></g></g>
+  </svg>
+  <div id="mont" class="full"></div>
+
+  <div id="cam" class="full">
+    <div id="browser" class="A">
+      <div id="tabstrip"><div class="dots"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i></div><div id="tabs"></div></div>
+      <div id="toolbar"><div class="nb" id="nb"></div><div id="omni"></div></div>
+      <div id="content">
+        <div id="pgSearch" class="pg">
+          <div class="sbig" id="sbig"></div>
+          <div class="res" id="sres"></div>
+        </div>
+        <div id="pgEmb" class="pg">
+          <div class="embh"><div class="crest"></div>Embassy · Consular &amp; Visa Section</div>
+          <div class="embnav"><span>Home</span><span>Consular Services</span><span>Visa Categories</span><span>Forms &amp; Downloads</span><span>Notices</span><span>FAQ</span></div>
+          <div class="embb"><div class="embm" id="embm"></div><div class="embs" id="embs"></div></div>
+        </div>
+        <div id="pgSim" class="pg">
+          <div class="simban"><div><div class="t1">MEGA ROAMING PACK!!</div><div class="t2">International data from ₹2,999/day* · T&amp;C apply</div></div><div class="blink" id="blink">LIMITED OFFER</div></div>
+          <div class="simrow" id="simrow"></div>
+          <div class="chatpop">💬 Chat with us! Activation may take 24–48 hrs</div>
+        </div>
+        <div id="pgHapp" class="pg">
+          <div class="happh">BookStays · Bali</div>
+          <div class="hlist" id="hlist"></div>
+          <div class="popw" style="left:760px;top:120px;background:#E11D48;color:#fff" id="pw1">🔥 Only 1 room left!</div>
+          <div class="popw" style="left:900px;top:300px;background:#fff;color:#111" id="pw2">+ ₹4,250 taxes &amp; fees</div>
+          <div class="popw" style="left:520px;top:470px;background:#111827;color:#fff" id="pw3">Prices may change at checkout</div>
+        </div>
+        <div id="pgHome" class="pg"></div>
+        <div id="pgVisa" class="pg"></div>
+        <div id="pgEsim" class="pg"></div>
+        <div id="pgPlans" class="pg"></div>
+        <div id="pgHotels" class="pg"></div>
+      </div>
+    </div>
+    <div id="cursor" class="A"></div><div id="cring" class="A"></div>
+  </div>
+
+  <!-- HUD (outside camera) -->
+  <div id="hud" class="full">
+    <div id="hookBg" class="full"><img src="../assets/img/bangkok.jpg"><div class="tint"></div></div>
+    <div id="hk1" class="A disp hook">PLANNING A TRIP</div>
+    <div id="hk2" class="A disp hook" style="font-size:250px">ABROAD<span class="q">?</span></div>
+    <div id="hkSearch" class="A"><span id="hkI"></span><span id="hkq"></span><span class="caret" id="hkc"></span></div>
+    <div id="st10" class="A sticker" style="background:#FF4D5E">10 TABS</div>
+    <div id="stEmb" class="A sticker" style="background:#475569">EMBASSY SITES</div>
+    <div id="stSim" class="A sticker" style="background:#D7081B">SIM SHOPS</div>
+    <div id="stHot" class="A sticker" style="background:#E11D48">HOTEL APPS</div>
+    <div id="cap" class="A cap"></div>
+    <div id="cnt1" class="A disp cnt">901</div><div id="cnt1l" class="A cntl">live eSIM plans</div>
+    <div id="cnt2" class="A disp cnt" style="color:#FFC21A">175</div><div id="cnt2l" class="A cntl">destinations</div>
+    <div id="stamp1" class="A stampbox" style="--c:#2EC4B0"><div class="b1">SORTED</div><div class="b2">VISA ✓</div></div>
+    <div id="stamp3" class="A stampbox" style="--c:#FFC21A"><div class="b1">₹0</div><div class="b2">BOOKING FEES</div></div>
+    <div id="liveb" class="A fchip" style="font-size:30px;letter-spacing:.12em"><i style="width:16px;height:16px;border-radius:50%;background:#22E58B;box-shadow:0 0 14px #22E58B;display:inline-block"></i>LIVE PRICES</div>
+    <div id="w1" class="A disp big">Compare.</div>
+    <div id="w2" class="A disp big">Discover.</div>
+    <div id="w3" class="A disp big">Save.</div>
+    <div id="smear" class="full"></div>
+    <img id="logo" class="A" src="../assets/img/logo_mark.png">
+    <div id="wmain" class="A disp wm">FlightDeals<span class="in">.in</span></div>
+    <div id="subtag" class="A">Visa · eSIM · Hotels — <b>one tab.</b></div>
+    <div id="tagline" class="A">COMPARE · DISCOVER · SAVE</div>
+    <div id="feat" class="A" style="display:flex;gap:16px"></div>
+    <div id="cta" class="A"><div id="shine"></div>flightdeals.in<span id="ctaArr"></span></div>
+    <div id="nofee" class="A" style="font-size:28px;font-weight:700;color:rgba(255,255,255,.75);white-space:nowrap">No booking fees, ever.</div>
+  </div>
+
+  <div id="ring" class="A"></div>
+  <div id="flash" class="full"></div>
+  <div id="vig" class="full"></div>
+  <canvas id="grain" class="full" width="1920" height="1080"></canvas>
+</div>
+
+<script src="../common/engine.js"></script>
+<script src="../common/ui.js"></script>
+<script>
+const {clamp, lerp, p, kf, spring, sp, T, $, show, hash} = E;
+const W = 1920, H = 1080, CX = 960, CY = 540;
+window.DURATION = 25.5;
+const B = 60 / 130, D = 17 * B, VIS = 21 * B, ESIM = 25 * B, HOT = 36 * B, END = 45 * B, LOGO = 51 * B, CUT = 6.70;
+// browser placement in the scene
+const BX = 960, BY = 520, BW = 1440, BH = 810, BL = BX - BW / 2, BT = BY - BH / 2, CT = BT + 116; // content top
+const inner = (x, y) => [BL + x, CT + y];   // content-area coords -> scene coords
+
+const TABS = [
+  ['New Tab', '#94A3B8', '+'], ['visa for thailand from india', '#4285F4', 'S'], ['Embassy – Visa Section', '#6B7280', 'E'],
+  ['e-Visa application portal', '#0EA5E9', 'V'], ['Visa on arrival rules 2026', '#8B5CF6', 'V'], ['International roaming packs', '#D7081B', 'R'],
+  ['Buy travel SIM card online', '#F97316', 'S'], ['Best eSIM for Thailand? : travel', '#FF4500', 'r'], ['Hotels in Bali – Book now', '#E11D48', 'H'],
+  ['Bali villas – 3 nights deals', '#14B8A6', 'B'], ['Hotel price comparison', '#2563EB', 'H'], ['INR to THB converter', '#16A34A', '₹'],
+  ['Thailand travel checklist', '#CA8A04', 'T'], ['Cheap hotels Seminyak', '#DB2777', 'C'], ['Travel insurance quotes', '#0891B2', 'I'], ['Airport transfer Bali', '#7C3AED', 'A']];
+const tabSpawn = i => i === 0 ? -1 : (i <= 10 ? 1.55 + (i - 1) * 0.13 : 6.42 + (i - 11) * 0.045);
+
+function setup() {
+  $('tabs').innerHTML = TABS.map((tb, i) => `<div class="tab" id="tab${i}"><div class="fav" style="background:${tb[1]}">${tb[2]}</div><div class="tt">${tb[0]}</div><div class="x">×</div></div>`).join('')
+    + `<div class="tab on" id="tabFD"><div class="fav" style="background:transparent"><img src="../assets/img/logo_mark.png"></div><div class="tt">FlightDeals.in — Compare flights, hotels &amp; experiences</div><div class="x">×</div></div>`;
+  $('nb').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/></svg>`;
+  $('sbig').innerHTML = I.search() + '<span id="sq"></span><span class="caret" id="scar"></span>';
+  $('sres').innerHTML = [['embassy.example › visa', 'Visa Information for Foreign Nationals – Embassy'], ['evisa-portal.example', 'Apply for e-Visa Online | Official Portal'], ['forum.example › thailand', 'Visa on arrival for Indians? (2026 thread)'], ['travelblog.example', 'Everything you need before flying to Thailand']]
+    .map(r => `<div class="r"><div class="u">${r[0]}</div><div class="h">${r[1]}</div><div class="bar" style="width:92%"></div><div class="bar" style="width:70%"></div></div>`).join('');
+  let em = '<h2>Visa Information for Foreign Nationals</h2>';
+  for (let i = 0; i < 9; i++) em += `<div class="tl" style="width:${90 - (i % 3) * 12}%"></div>`;
+  em += '<table class="tbl"><tr><td>Category</td><td>Duration</td><td>Fee</td><td>Documents</td></tr><tr><td>TR</td><td>60 days</td><td>See notice</td><td>Annex B</td></tr><tr><td>VOA</td><td>15 days</td><td>See notice</td><td>Annex C</td></tr></table>';
+  em += '<span class="pdf"><b>PDF</b>Application_Form_v7.pdf</span><span class="pdf"><b>PDF</b>Checklist_rev_2026.pdf</span><span class="pdf"><b>PDF</b>Notice_43-2026.pdf</span>';
+  for (let i = 0; i < 5; i++) em += `<div class="tl" style="width:${84 - (i % 2) * 18}%"></div>`;
+  $('embm').innerHTML = em;
+  $('embs').innerHTML = '<div class="box"><b style="font-family:Georgia">Important Notice</b><div class="tl"></div><div class="tl" style="width:80%"></div><div class="tl" style="width:60%"></div></div><div class="box"><b style="font-family:Georgia">Office Hours</b><div class="tl"></div><div class="tl" style="width:70%"></div></div>';
+  $('simrow').innerHTML = [['₹2,999', '/day · 1GB'], ['₹5,499', '/week · 3GB'], ['₹9,999', '/month · 10GB']].map(s => `<div class="simc"><div class="sp">${s[0]}</div><div class="ss">${s[1]}</div><div class="sb">BUY NOW!!</div></div>`).join('');
+  $('hlist').innerHTML = [0, 1, 2].map(i => `<div class="hrow"><div class="im"></div><div style="flex:1"><div class="tl" style="width:60%;height:16px;background:#9CA3AF"></div><div class="tl" style="width:40%"></div><div class="tl" style="width:30%"></div></div><div style="width:200px;text-align:right;font-weight:800;font-size:26px;color:#111">₹${['31,999', '27,450', '44,800'][i]}<div style="font-size:12px;color:#E11D48">+ taxes &amp; fees</div></div></div>`).join('');
+
+  const fdh = (on) => `<div class="fdh"><div class="fdlogo"><img src="../assets/img/logo_mark.png"><div><div class="n">FlightDeals<span>.in</span></div><div class="s">COMPARE · DISCOVER · SAVE</div></div></div>
+    <div class="fdnav">${['Deals', 'Flights', 'Hotels', 'Experiences', 'Visa', 'eSIM', 'Transfers', 'Tours'].map(n => `<span id="nav${on}_${n}" class="${n === on ? 'on' : ''}">${n}</span>`).join('')}</div><div class="fdr"><span class="inr">₹ INR</span><span class="sign">Sign in</span></div></div>`;
+  $('pgHome').innerHTML = fdh('') + `<div class="hero"><img src="../assets/img/hero.jpg"><div class="ov"></div><div class="hin"><span class="pill">✦ Metasearch · Compare · Book with partners</span><h1>Compare flights, hotels &amp; experiences.</h1><div class="hs">We search dozens of deals and rank them with our transparent FlightDeals Score. No booking fees, ever.</div></div>
+    <div class="scard"><div style="display:flex;gap:10px;margin-bottom:14px"><span class="chips" style="padding:0"><span class="on">Round trip</span><span>One way</span><span>Multi-city</span></span></div><div style="display:flex;gap:14px">${['FROM|City or airport', 'TO|City or airport', 'DEPART|Oct 28, 2026', 'RETURN|Nov 4, 2026', 'TRAVELLERS|1 pax · Economy'].map(f => `<div class="vf"><div class="l">${f.split('|')[0]}</div><div class="v" style="font-size:16px">${f.split('|')[1]}</div></div>`).join('')}<div class="vbtn" style="align-self:flex-end">${I.search()}Search</div></div></div></div>`;
+  const flagIN = `<svg class="flag" viewBox="0 0 30 20">${I.flagIN().replace(/^<svg[^>]*>|<\/svg>$/g, '')}</svg>`, flagTH = `<svg class="flag" viewBox="0 0 30 20">${I.flagTH().replace(/^<svg[^>]*>|<\/svg>$/g, '')}</svg>`;
+  $('pgVisa').innerHTML = fdh('Visa') + `<div class="vhero"><span class="pill">New · Visa vertical</span><h1>${I.stamp(2)}Visa &amp; entry requirements</h1><p>Check indicative entry requirements for your trip. Always confirm officially before you travel.</p></div>
+    <div class="vform"><div class="vf"><div class="l">Passport / Citizenship</div><div class="v">${flagIN}India</div></div><div class="vf"><div class="l">Destination</div><div class="v">${flagTH}Thailand</div></div><div class="vf"><div class="l">Purpose</div><div class="v">Tourism</div></div><div class="vf"><div class="l">Travel date (optional)</div><div class="v" style="color:#94A3B8">dd-mm-yyyy</div></div><div class="vbtn" id="vbtn"><span id="vbt">Check requirements</span><div class="spin" id="vspin"></div></div></div>
+    <div class="vres" id="vres"><div class="vr1"><div class="ri">${I.stamp(2)}</div><div><div class="k">Visa required</div><div class="t">Visa on Arrival / e-Visa</div></div><div class="tg">Indicative — verify officially</div></div>
+    <div class="vstats">${[['Visa type', 'VoA / e-Visa'], ['Entry type', 'Single entry'], ['Stay duration', 'Up to 15–30 days'], ['Validity', 'Per issued visa'], ['Processing', '1–3 business days'], ['Fees', '~THB 2,000 (VoA)']].map((s, i) => `<div class="vst" id="vst${i}"><div class="k">${s[0]}</div><div class="v">${s[1]}</div></div>`).join('')}</div>
+    <div class="vdocs">${['Passport valid 6+ months', 'Return ticket', 'Proof of funds', 'Hotel booking'].map((d, i) => `<div class="vdoc" id="vdoc${i}"><div class="ck">${I.check(3)}</div>${d}</div>`).join('')}</div></div>`;
+  const dests = [['Thailand', '25 plans · Asia', '₹67', 'thailand'], ['Japan', '25 plans · Asia', '₹67', 'japan'], ['United Arab Emirates', '19 plans · Middle East', '₹95', 'dubai'], ['Singapore', '24 plans · Asia', '₹67', 'singapore'],
+    ['United Kingdom', '36 plans · Europe', '₹50', 'london'], ['France', '46 plans · Europe', '₹50', 'paris'], ['Turkey', '44 plans · Europe', '₹50', 'turkey'], ['Italy', '34 plans · Europe', '₹50', 'italy']];
+  $('pgEsim').innerHTML = fdh('eSIM') + `<div class="ehero"><span class="chipt">${I.globe(2).replace('<svg', '<svg style="width:16px;height:16px"')}Compare eSIMs</span><h1>Stay connected abroad — instantly</h1><p>Compare live travel eSIM data plans across providers. No physical SIM, no roaming bills — scan a QR and you're online the moment you land.</p><div class="esearch">${I.search()}Search 175+ destinations…</div></div>
+    <div style="padding:20px 40px 0;font-weight:800;font-size:22px">Popular destinations</div><div class="egrid" style="padding-top:12px">${dests.map((d, i) => `<div class="ec" id="ec${i}"><img src="../assets/img/${d[3]}.jpg"><div class="eb"><div><div class="en">${d[0]}</div><div class="es">${d[1]}</div></div><div class="ep"><small>from</small>${d[2]}</div></div></div>`).join('')}</div>`;
+  $('pgPlans').innerHTML = fdh('eSIM') + `<div class="ptitle"><img src="../assets/img/thailand.jpg"><div><div class="a">Thailand eSIM plans</div><div class="b">Comparing 25 plans · prices update automatically</div></div></div>
+    <div class="chips" id="pchips">${['Recommended', 'Cheapest', 'Best value', 'Most data', 'Longest validity'].map((c, i) => `<span id="pch${i}">${c}</span>`).join('')}</div>
+    <div class="plist">${[['Best Overall', '#1E6BFF', 'Global (130+ areas)', 'Unlimited · 1 day · 4G/5G · Roaming', '₹367', '₹334'], ['Cheapest', '#239587', 'Thailand', 'Unlimited · 1 day · 4G/5G', '₹73', '₹67'], ['Best Value', '#0EA5E9', 'Asia (10+ regions)', 'Unlimited · 1 day · 4G/5G · Roaming', '₹73', '₹67']]
+      .map((pl, i) => `<div class="pc" id="pc${i}"><div><span class="bd" style="background:${pl[1]}">${pl[0]}</span><div class="nm" style="margin-top:6px">${pl[2]}</div><div class="ft">${pl[3]}</div></div><div class="pr"><s>${pl[4]}</s><b>${pl[5]}</b></div><div class="buy">Buy eSIM ↗</div></div>`).join('')}</div>`;
+  const hotels = [['Sithala Villa Seminyak', 'hotel', '8.6', '-55%', '₹72,556', '₹25,615', 4], ['TS Suites Seminyak', 'bali', '8.9', '-47%', '₹58,051', '₹27,744', 4], ['Gdas Bali Health and Wellness Resort', 'thailand', '9.0', '-22%', '₹1,12,975', '₹81,082', 5]];
+  $('pgHotels').innerHTML = fdh('Hotels') + `<div class="hhero"><h1>${I.bed(2)}Compare hotels</h1><p>Search any city worldwide — live prices, real reviews &amp; photos, then book with our trusted partner.</p>
+    <div class="hform"><div class="vf"><div class="l">DESTINATION / CITY</div><div class="v">${I.pin(2).replace('<svg', '<svg style="width:20px;height:20px;color:#94A3B8"')}<span id="hq"></span><span class="caret" id="hcar"></span></div></div><div class="vf"><div class="l">CHECK-IN</div><div class="v">28-10-2026</div></div><div class="vf"><div class="l">CHECK-OUT</div><div class="v">31-10-2026</div></div><div class="vf" style="flex:.5"><div class="l">GUESTS</div><div class="v">2</div></div><div class="vf" style="flex:.5"><div class="l">ROOMS</div><div class="v">1</div></div><div class="vbtn" id="hbtn">${I.search()}Search</div></div></div>
+    <div id="hpop" style="padding:26px 40px"><div style="font-weight:800;font-size:22px;display:flex;gap:10px;align-items:center">✦ Popular destinations</div>
+      <div style="font-size:13px;font-weight:700;color:#5B6B82;margin-top:16px">POPULAR IN INDIA</div><div class="chips" style="padding:10px 0 0">${['Goa','New Delhi','Mumbai','Jaipur','Kolkata'].map(c=>`<span>📍 ${c}</span>`).join('')}</div>
+      <div style="font-size:13px;font-weight:700;color:#5B6B82;margin-top:18px">INTERNATIONAL</div><div class="chips" style="padding:10px 0 0">${['Dubai','Bali','Tokyo','Bangkok','Paris','Singapore'].map(c=>`<span>📍 ${c}</span>`).join('')}</div></div>
+    <div class="prog" id="prog"><i id="progi"></i></div><div class="progl" id="progl">Fetching live hotel prices…</div>
+    <div class="hres" id="hres"><div class="hrhead"><div class="c">112 stays in Bali</div><span class="chips" style="padding:0 0 0 14px"><span class="on">Recommended</span><span>Lowest price</span><span>Rating</span></span><div class="tog"><span id="tgList" class="on">${I.list()}List</span><span id="tgMap">${I.map()}Map</span></div></div>
+    <div class="fpanel"><div class="fh">Filters</div><div class="fk">Price</div><div class="slider"><i></i></div><div style="display:flex;justify-content:space-between;font-size:13px;color:#5B6B82;margin-top:10px;font-weight:600"><span>₹522</span><span>₹6,54,234</span></div><div class="fk">Star rating</div><div style="display:flex;gap:6px;margin-top:8px">${[3, 4, 5].map(s => `<span style="border:1.5px solid #E3E8EF;border-radius:8px;padding:4px 10px;font-size:13px;font-weight:700">${s}★</span>`).join('')}</div><div class="fk">Room type</div>
+      <div class="cbx"><b class="on">${I.check(3)}</b>Best available rate</div><div class="cbx"><b id="cbBf">${I.check(3)}</b>Breakfast included</div><div class="cbx"><b id="cbWf">${I.check(3)}</b>Free Wi-Fi</div></div>
+    <div class="hcards" id="hcards">${hotels.map((h, i) => `<div class="hc" id="hc${i}"><img src="../assets/img/${h[1]}.jpg"><div class="off" id="hoff${i}">${h[3]}</div><div><div class="st">${I.star().repeat(h[6])}</div><div class="nm">${h[0]}</div><div class="lc">Bali · Best available rate · 3 nights</div><div class="am"><span>Breakfast</span><span>Free Wi-Fi</span></div></div><div class="gr">${h[2]}</div><div class="pr"><div class="old">${h[4]}<i id="hst${i}"></i></div><div class="nw">${h[5]}</div><div class="tt">total · 3 nights</div><div class="bk">BOOK NOW ↗</div></div></div>`).join('')}</div>
+    <div id="map"><svg width="1030" height="520" viewBox="0 0 1030 520"><path d="M120 470 C 180 330, 300 300, 380 210 S 600 90, 720 140 S 930 120, 990 260 S 860 470, 700 480 S 420 520, 120 470z" fill="#F4F1E8" stroke="#E2DCCB" stroke-width="3"/><path d="M200 430 C 330 380, 460 400, 560 320 S 760 260, 880 300" fill="none" stroke="#fff" stroke-width="8"/><path d="M380 210 C 420 300, 470 360, 600 470" fill="none" stroke="#fff" stroke-width="6"/><circle cx="640" cy="250" r="60" fill="#DDEBD5"/><circle cx="300" cy="400" r="40" fill="#DDEBD5"/></svg><div id="pins"></div></div></div>`;
+  $('pins').innerHTML = [[260, 360, '₹25.6k', 1], [420, 300, '₹27.7k', 0], [560, 230, '₹18.2k', 0], [700, 330, '₹33.8k', 0], [820, 220, '₹81k', 0], [360, 430, '₹9.2k', 0], [610, 420, '₹21.7k', 0]]
+    .map((m, i) => `<div class="A mpin${m[3] ? ' hot' : ''}" id="pin${i}" data-x="${m[0]}" data-y="${m[1]}">${m[2]}</div>`).join('');
+  $('cursor').innerHTML = I.cursor(); $('hkI').innerHTML = I.search(2.4);
+  $('ctaArr').innerHTML = I.arrow();
+  $('feat').innerHTML = `<span class="fchip">${I.passport(2)}Visa checker</span><span class="fchip">${I.sim(2)}Travel eSIMs</span><span class="fchip">${I.bed(2)}Hotels</span>`;
+  let sm = ''; for (let i = 0; i < 14; i++) sm += `<div class="A disp wm" id="sm${i}">FlightDeals<span class="in">.in</span></div>`;
+  $('smear').innerHTML = sm;
+  const mon = ['thailand', 'japan', 'paris', 'dubai', 'bali', 'london', 'singapore', 'italy'];
+  $('mont').innerHTML = mon.map((m, i) => `<div class="A mont" id="mo${i}"><img src="../assets/img/${m}.jpg"></div>`).join('');
+}
+
+const stars = new E.Stars($('stars'), 300, 5);
+const grain = new E.Grain($('grain'), 22);
+const fpath = $('fpath'); let fLen = 0;
+
+function slam(t, a, dur = 0.28, from = 2.6, blurMax = 26) { const k = p(t, a, a + dur), e = E.outExpo(k); return { s: lerp(from, 1, e), o: clamp(k * 4), blur: (1 - e) * blurMax }; }
+function zthru(t, a, dur = 0.22, to = 6) { const k = p(t, a, a + dur), e = E.inExpo(k); return { s: lerp(1, to, e), o: 1 - clamp((k - 0.45) / 0.55), blur: e * 30 }; }
+function pop(t, a, f = 2.6, d = 0.42) { return clamp(sp(t, a, f, d), 0, 2); }
+let shake = 0;
+function addShake(t, a, amp = 14, dur = 0.25) { if (t >= a && t < a + dur) shake += amp * (1 - (t - a) / dur); }
+function flashAt(t, a, peak = 0.9, dur = 0.28) { return t >= a ? peak * Math.exp(-(t - a) / dur * 4) : 0; }
+
+// ---------- captions ----------
+const CAPS = [
+  [6.80, 7.80, [['Or', 6.82], ['just', 7.05], ['one.', 7.38, 1]]],
+  [9.80, 11.55, [['Visa', 9.82, 1], ['rules', 10.12], ['in', 10.42], ['seconds.', 10.62, 1]]],
+  [11.72, 16.55, [['Compare', 11.75], ['900+', 12.3, 1], ['eSIM', 13.3], ['plans', 13.65], ['·', 14.05], ['175', 14.5, 1], ['destinations', 15.85]]],
+  [16.72, 17.9, [['Then', 16.75], ['hotels.', 17.1, 1]]],
+  [17.95, 19.0, [['Live', 17.98, 1], ['prices.', 18.3]]],
+  [19.02, 20.45, [['Zero', 19.05, 1], ['booking', 19.45, 1], ['fees.', 19.9, 1]]]];
+let capIdx = -1;
+function captions(t) {
+  let cur = -1;
+  for (let i = 0; i < CAPS.length; i++) if (t >= CAPS[i][0] - 0.02 && t < CAPS[i][1] + 0.12) cur = i;
+  const el = $('cap');
+  if (cur < 0) { T(el, { o: 0 }); return; }
+  if (cur !== capIdx) { el.innerHTML = CAPS[cur][2].map(w => `<span class="w${w[2] ? ' hl' : ''}">${w[0]}</span>`).join(''); capIdx = cur; }
+  const [a, b, ws] = CAPS[cur];
+  const out = p(t, b, b + 0.12);
+  T(el, { x: 110, y: 948, o: clamp((t - ws[0][1] + 0.02) * 7) * (1 - out) });
+  el.querySelectorAll('.w').forEach((w, i) => {
+    const k = p(t, ws[i][1], ws[i][1] + 0.2), e = E.outBack(k, 2);
+    w.style.display = t >= ws[i][1] ? 'inline-block' : 'none';
+    w.style.opacity = clamp(k * 3).toFixed(3);
+    w.style.transform = `translateY(${((1 - e) * 40).toFixed(1)}px)`;
+    w.style.filter = k < 1 ? `blur(${((1 - k) * 8).toFixed(1)}px)` : 'none';
+  });
+}
+
+// ---------- browser helpers ----------
+let curPage = '';
+function page(id, y = 0, o = 1) {
+  for (const pid of ['pgSearch', 'pgEmb', 'pgSim', 'pgHapp', 'pgHome', 'pgVisa', 'pgEsim', 'pgPlans', 'pgHotels']) {
+    const on = pid === id || (Array.isArray(id) && id.includes(pid));
+    $(pid).style.display = on ? '' : 'none';
+  }
+}
+function omni(url) { const o = $('omni'); const h = `${I.search().replace('<svg', '<svg')}${url}`; if (o.dataset.u !== url) { o.innerHTML = h; o.dataset.u = url; } }
+
+function layoutTabs(t) {
+  // which tabs are alive & their widths
+  const collapse = p(t, 6.78, 7.25), ce = E.inOutCubic(collapse);
+  const alive = []; let total = 0;
+  const fd = t >= 6.78;
+  TABS.forEach((tb, i) => {
+    const s = tabSpawn(i);
+    let g = i === 0 ? 1 : clamp(sp(t, s, 3.2, 0.7), 0, 1.05);
+    if (fd) g *= 1 - ce;
+    alive.push(g); total += g;
+  });
+  const fdW = fd ? ce : 0;
+  const avail = 1440 - 110 - 10;
+  const unit = Math.min(250, avail / Math.max(1, total + fdW * 1.6));
+  let x = 110;
+  const active = activeTab(t);
+  TABS.forEach((tb, i) => {
+    const w = unit * alive[i];
+    const el = $('tab' + i);
+    if (w < 1) { el.style.display = 'none'; return; }
+    el.style.display = ''; el.style.left = x.toFixed(1) + 'px'; el.style.width = w.toFixed(1) + 'px';
+    el.className = 'tab' + (i === active && !fd ? ' on' : '');
+    el.style.opacity = clamp(alive[i] * 2).toFixed(2);
+    x += w;
+  });
+  const fe = $('tabFD');
+  if (fd) { fe.style.display = ''; fe.style.left = '110px'; fe.style.width = Math.max(40, 420 * ce).toFixed(1) + 'px'; }
+  else fe.style.display = 'none';
+}
+function activeTab(t) {
+  if (t < 1.55) return 0; if (t < 3.0) return Math.min(10, 1 + Math.floor((t - 1.55) / 0.13));
+  if (t < 4.15) return 2; if (t < 5.45) return 5; if (t < 6.42) return 8;
+  return 2 + (Math.floor(t * 18) % 9);
+}
+
+// cursor path: list of [time, x, y, click?] in scene coords
+let CUR = [];
+function cursorAt(t) {
+  if (!CUR.length || t < CUR[0][0] || t > CUR[CUR.length - 1][0] + 0.3) return null;
+  for (let i = 1; i < CUR.length; i++) {
+    if (t <= CUR[i][0]) {
+      const [t0, x0, y0] = CUR[i - 1], [t1, x1, y1] = CUR[i];
+      const k = E.inOutCubic((t - t0) / (t1 - t0));
+      return [lerp(x0, x1, k), lerp(y0, y1, k)];
+    }
+  }
+  const l = CUR[CUR.length - 1]; return [l[1], l[2]];
+}
+
+// ---------- scenes ----------
+function sceneIntro(t, cam) {
+  // search typing
+  const q = E.typed('visa for thailand from india', t, 0.15, 24);
+  const sq = $('sq'); if (sq.textContent !== q) sq.textContent = q;
+  $('scar').style.opacity = Math.floor(t * 4) % 2 ? 0.2 : 1;
+  const sres = $('sres'); sres.style.opacity = clamp((t - 1.35) * 4).toFixed(2);
+  let pg = 'pgSearch'; let url = 'search.example/?q=visa+for+thailand+from+india';
+  if (t >= 3.0 && t < 4.15) { pg = 'pgEmb'; url = 'embassy.example/consular/visa-information'; }
+  else if (t >= 4.15 && t < 5.45) { pg = 'pgSim'; url = 'roaming-simshop.example/mega-pack'; }
+  else if (t >= 5.45 && t < 6.42) { pg = 'pgHapp'; url = 'bookstays.example/bali?sort=popular'; }
+  else if (t >= 6.42 && t < CUT) { pg = ['pgEmb', 'pgSim', 'pgHapp'][Math.floor(t * 20) % 3]; url = 'loading…'; }
+  else if (t >= CUT) { pg = 'pgHapp'; url = 'flightdeals.in'; }
+  page(pg); omni(url);
+  $('blink').style.opacity = Math.floor(t * 6) % 2 ? 0.25 : 1;
+  for (let i = 1; i <= 3; i++) { const a = 5.6 + i * 0.16; T('pw' + i, { s: pop(t, a, 3, 0.45), o: clamp((t - a) * 8) }); }
+  // ---- cinematic hook (HUD, 0 -> 1.5s)
+  if (t < 1.56) {
+    const z = E.inExpo(p(t, 1.32, 1.52));
+    T('hookBg', { s: lerp(1, 1.6, z), o: 1 - z, blur: z * 20 });
+    T($('hookBg').querySelector('img'), { s: lerp(1.12, 1.22, p(t, 0, 1.5)) });
+    const a = slam(t, 0.08, 0.26, 2.8, 30), b = slam(t, 0.8, 0.26, 2.8, 30);
+    T('hk1', { c: 1, x: CX, y: lerp(330, 300, p(t, 0.8, 1.3)), s: a.s * lerp(1, 2.4, z), o: a.o * (1 - z), blur: a.blur + z * 24 });
+    T('hk2', { c: 1, x: CX, y: lerp(520, 500, p(t, 0.8, 1.3)), s: b.s * lerp(1, 2.4, z), o: b.o * (1 - z), blur: b.blur + z * 24 });
+    const sk = pop(t, 0.28, 2.4, 0.6);
+    T('hkSearch', { c: 1, x: CX, y: lerp(800, 780, clamp(sk)), s: clamp(sk, 0, 1.2) * lerp(1, 1.8, z), o: clamp((t - 0.28) * 8) * (1 - z), blur: z * 16 });
+    const hq = E.typed('visa for thailand from india', t, 0.34, 26); if ($('hkq').textContent !== hq) $('hkq').textContent = hq;
+    $('hkc').style.opacity = Math.floor(t * 4) % 2 ? 0.2 : 1;
+    addShake(t, 0.1, 14, 0.2); addShake(t, 0.82, 16, 0.2);
+  }
+  layoutTabs(t);
+  // camera choreography
+  let s = kf(t, [[0, 2.4], [1.38, 2.4], [1.9, 1.32, E.outExpo], [2.9, 1.36], [3.08, 1.28, E.outExpo], [4.05, 1.33], [4.2, 1.12, E.outExpo], [5.4, 1.18], [5.5, 1.3, E.outExpo], [6.4, 1.36], [6.6, 1.06, E.outExpo], [6.78, 1.04], [7.6, 1.9, E.inOutCubic], [D, 9, E.inExpo]]);
+  let fx = kf(t, [[0, BX], [1.38, BX], [1.9, BX, E.outExpo], [2.9, BX], [3.08, 860, E.outExpo], [4.05, 860], [4.2, 1040, E.outExpo], [5.4, 1040], [5.5, 900, E.outExpo], [6.6, BX, E.outExpo], [6.78, BX], [7.6, BL + 150, E.inOutCubic], [D, BL + 128, E.inExpo]]);
+  let fy = kf(t, [[0, CT + 152], [1.38, CT + 152], [1.9, BT + 210, E.outExpo], [2.9, BT + 210], [3.08, 560, E.outExpo], [4.05, 560], [4.2, 520, E.outExpo], [5.4, 520], [5.5, 540, E.outExpo], [6.6, BY, E.outExpo], [6.78, BY], [7.6, BT + 60, E.inOutCubic], [D, BT + 33, E.inExpo]]);
+  cam.s = s; cam.fx = fx; cam.fy = fy;
+  if (t > 6.42 && t < CUT) shake += 10;
+  for (const a of [3.0, 4.15, 5.45]) addShake(t, a, 12, 0.18);
+  // freeze/desaturate at cut
+  const dead = t >= CUT;
+  $('browser').style.filter = dead ? `saturate(${lerp(0.1, 0, p(t, CUT, 7.0)).toFixed(2)}) brightness(${lerp(0.55, 0.35, p(t, CUT, 7.4)).toFixed(2)})` : (t > 6.42 ? `hue-rotate(${(hash(Math.floor(t * 60)) * 40 - 20).toFixed(0)}deg) contrast(1.2)` : 'none');
+  $('content').style.opacity = dead ? (1 - p(t, 6.78, 7.2)).toFixed(2) : 1;
+  // stickers (HUD)
+  const stk = (id, a, b, x, y, r) => { const k = p(t, a, a + 0.18), e = E.outBack(k, 2.5); const out = p(t, b, b + 0.1); T(id, { c: 1, x, y, s: lerp(2.2, 1, E.outExpo(k)) * (1 - out * 0.3), r, o: clamp(k * 5) * (1 - out), blur: (1 - E.outExpo(k)) * 10 }); };
+  stk('st10', 1.95, 2.95, 1450, 300, 6);
+  stk('stEmb', 3.05, 4.1, 560, 760, -5);
+  stk('stSim', 4.25, 5.4, 1380, 720, 5);
+  stk('stHot', 5.55, 6.45, 600, 330, -4);
+  $('st10').textContent = `${Math.min(10, Math.max(1, Math.floor((t - 1.55) / 0.13) + 1))} TABS`;
+}
+
+function sceneLogo(t, cam) {
+  // drop: logo + wordmark over navy; then logo flies into the tab and camera pulls back to the browser
+  const on = t >= D - 0.02 && t < VIS + 0.05;
+  if (!on) return false;
+  const back = E.inOutCubic(p(t, 9.2, VIS));
+  const lk = pop(t, D, 2.0, 0.5);
+  T('logo', { c: 1, x: lerp(CX, BL + 128, back), y: lerp(380, BT + 33, back), s: clamp(lk, 0, 1.3) * lerp(1, 0.06, back), o: clamp((t - D) * 10) * (1 - p(t, VIS - 0.08, VIS)), r: lerp(-20, 0, clamp(lk)) });
+  const wa = D + 0.1, wk = p(t, wa, wa + 0.42), we = E.outExpo(wk);
+  const wy = 690, fade = 1 - E.inOutCubic(p(t, 9.0, 9.28));
+  T('wmain', { c: 1, x: CX, y: wy, s: lerp(2.8, 1, we) * lerp(1, 0.92, p(t, 9.0, 9.28)), o: clamp(wk * 6) * fade, blur: (1 - we) * 6 + (1 - fade) * 6 });
+  for (let i = 0; i < 14; i++) { const f = (i + 1) / 14; T('sm' + i, { c: 1, x: CX, y: wy, s: lerp(2.8, 1, we) * (1 + f * 1.6 * (1 - we)), o: (1 - we) * 0.3 * (1 - f) * clamp(wk * 8) }); }
+  const sk = E.outExpo(p(t, 8.55, 8.95));
+  T('subtag', { c: 1, x: CX, y: 830 + (1 - sk) * 30, o: sk * fade });
+  // browser returns (camera pull back) after 9.2
+  const pb = E.inOutCubic(p(t, 9.12, 9.9));
+  cam.s = lerp(2.4, 1, pb); cam.fx = lerp(BL + 300, BX, pb); cam.fy = lerp(BT + 160, BY, pb);
+  return t < 9.12;  // true => hide browser
+}
+
+function sceneVisa(t, cam) {
+  // home (briefly) -> visa page
+  const click1 = 9.68;
+  page(t < click1 + 0.08 ? 'pgHome' : 'pgVisa');
+  omni(t < click1 + 0.08 ? 'flightdeals.in' : 'flightdeals.in/visa');
+  const pv = $('pgVisa'); const push = E.outExpo(p(t, click1 + 0.08, click1 + 0.4));
+  pv.style.transform = `translateY(${((1 - push) * 80).toFixed(1)}px)`; pv.style.opacity = push.toFixed(2);
+  const loading = t > 10.32 && t < 10.52;
+  $('vbt').style.display = loading ? 'none' : ''; $('vspin').style.display = loading ? '' : 'none';
+  $('vspin').style.transform = `rotate(${(t * 900) % 360}deg)`;
+  $('vbtn').style.transform = `scale(${(1 - 0.06 * (p(t, 10.3, 10.36) - p(t, 10.36, 10.46))).toFixed(3)})`;
+  const rk = clamp(sp(t, 10.52, 2.4, 0.6), 0, 1.1);
+  T('vres', { y: (1 - rk) * 40, o: clamp((t - 10.52) * 8), s: lerp(0.96, 1, clamp(rk)) });
+  for (let i = 0; i < 6; i++) { const a = 10.6 + i * 0.04, k = E.outExpo(p(t, a, a + 0.3)); T('vst' + i, { y: (1 - k) * 16, o: k }); }
+  for (let i = 0; i < 4; i++) { const a = 10.85 + i * 0.12; T('vdoc' + i, { o: clamp((t - a) * 8), x: (1 - E.outExpo(p(t, a, a + .3))) * 20 }); $('vdoc' + i).querySelector('.ck').style.transform = `scale(${pop(t, a, 3, 0.45).toFixed(3)})`; }
+  // camera: zoom to result card then whip right
+  const [rx, ry] = inner(720, 470);
+  const z = kf(t, [[VIS, 1], [10.15, 1.0], [10.3, 1.15, E.inOutCubic], [10.5, 1.15], [10.85, 1.42, E.outExpo], [11.25, 1.48]]);
+  cam.s = z;
+  const [bx, by] = inner(1290, 305);
+  cam.fx = kf(t, [[VIS, BX], [10.15, BX], [10.3, bx, E.inOutCubic], [10.5, bx], [10.85, rx, E.outExpo], [11.25, rx + 20]]);
+  cam.fy = kf(t, [[VIS, BY], [10.15, BY], [10.3, by, E.inOutCubic], [10.5, by], [10.85, ry, E.outExpo], [11.25, ry + 10]]);
+  // stamp
+  const st = p(t, 11.2, 11.32), se = E.outExpo(st);
+  T('stamp1', { c: 1, x: 1500, y: 330, s: lerp(2.6, 1, se), r: -10, o: clamp(st * 5) * (1 - p(t, 11.4, 11.5)), blur: (1 - se) * 10 });
+  addShake(t, 11.22, 14, 0.22);
+}
+
+function sceneEsim(t, cam) {
+  const toPlans = t >= 15.0;
+  page(toPlans ? 'pgPlans' : 'pgEsim');
+  omni(toPlans ? 'flightdeals.in/esim/thailand' : 'flightdeals.in/esim');
+  for (let i = 0; i < 8; i++) { const a = 11.9 + i * 0.07, k = pop(t, a, 2.4, 0.6); T('ec' + i, { y: (1 - clamp(k)) * 60, s: lerp(0.85, 1, clamp(k)), o: clamp((t - a) * 6) }); }
+  // sort chips and plan reorders
+  const order = [[0, 1, 2], [1, 2, 0], [2, 1, 0], [0, 2, 1]];
+  const chipAt = [15.0, 15.42, 15.84];
+  let stage = 0; chipAt.forEach((c, i) => { if (t >= c) stage = i + 1; });
+  for (let i = 0; i < 5; i++) $('pch' + i).className = (stage === 0 ? i === 0 : i === stage) ? 'on' : '';
+  for (let i = 0; i < 3; i++) {
+    const prevO = order[Math.max(0, stage - 1)], curO = order[stage];
+    const k = stage ? E.outBack(p(t, chipAt[stage - 1] + 0.05, chipAt[stage - 1] + 0.4), 1.4) : 1;
+    const y0 = prevO.indexOf(i) * 132, y1 = curO.indexOf(i) * 132;
+    T('pc' + i, { y: lerp(y0, y1, k), o: clamp((t - 15.05 - i * 0.05) * 6) });
+  }
+  // layout: browser slides left for the counters
+  const side = E.inOutCubic(p(t, 12.15, 12.55)) * (1 - E.inOutCubic(p(t, 16.1, 16.45)));
+  cam.s = lerp(1, 0.826, side); cam.fx = lerp(BX, 1329, side); cam.fy = BY;
+  // whip-in from visa
+  const win = 1 - E.outExpo(p(t, ESIM, ESIM + 0.35));
+  cam.fx += win * -500;
+  return side;
+}
+
+function sceneHotels(t, cam) {
+  page('pgHotels'); omni('flightdeals.in/hotels?destination=Bali');
+  const q = E.typed('Bali', t, 16.92, 14); const hq = $('hq'); if (hq.textContent !== q) hq.textContent = q;
+  $('hcar').style.opacity = t < 17.3 && Math.floor(t * 4) % 2 ? 1 : 0;
+  const prog = p(t, 17.36, 17.86);
+  T('prog', { o: prog > 0 && t < 17.95 ? 1 : 0 }); T('progl', { o: prog > 0 && t < 17.95 ? 1 : 0 }); $('progi').style.width = (E.outCubic(prog) * 100).toFixed(1) + '%';
+  T('hpop', { o: 1 - p(t, 17.33, 17.42), y: -12 * p(t, 17.33, 17.42) });
+  // page scrolls to the results once they load
+  $('pgHotels').style.transform = `translateY(${(-232 * E.outExpo(p(t, 17.9, 18.35))).toFixed(1)}px)`;
+  T('hres', { o: clamp((t - 17.88) * 6), y: (1 - E.outExpo(p(t, 17.88, 18.3))) * 40 });
+  for (let i = 0; i < 3; i++) {
+    const a = 17.92 + i * 0.08, k = E.outExpo(p(t, a, a + 0.35));
+    T('hc' + i, { y: (1 - k) * 30, o: k * (1 - p(t, 18.85, 18.95)) });
+    T('hst' + i, { sx: E.outCubic(p(t, 18.15 + i * 0.06, 18.35 + i * 0.06)) });
+    T('hoff' + i, { s: pop(t, 18.35 + i * 0.06, 3, 0.42), o: clamp((t - 18.35 - i * .06) * 8) });
+  }
+  const bf = t >= 18.75; $('cbBf').className = bf ? 'on' : ''; $('cbWf').className = '';
+  const mapOn = t >= 18.88;
+  $('tgList').className = mapOn ? '' : 'on'; $('tgMap').className = mapOn ? 'on' : '';
+  T('map', { o: clamp((t - 18.88) * 6), s: lerp(0.96, 1, E.outExpo(p(t, 18.88, 19.2))) });
+  $('hcards').style.visibility = t < 18.95 ? 'visible' : 'hidden';
+  for (let i = 0; i < 7; i++) {
+    const el = $('pin' + i), a = 18.92 + i * 0.08, k = pop(t, a, 3, 0.45);
+    el.style.left = el.dataset.x + 'px'; el.style.top = el.dataset.y + 'px';
+    el.style.transform = `translate(-50%,-100%) scale(${k.toFixed(3)})`; el.style.opacity = clamp((t - a) * 8).toFixed(2);
+  }
+  // live badge HUD
+  T('liveb', { c: 1, x: 1620, y: 120, s: pop(t, 17.98, 2.6, 0.5), o: clamp((t - 17.98) * 8) * (1 - p(t, 20.3, 20.45)) });
+  $('liveb').querySelector('i').style.opacity = (0.4 + 0.6 * Math.abs(Math.sin(t * 6))).toFixed(2);
+  const st = p(t, 19.6, 19.72), se = E.outExpo(st);
+  T('stamp3', { c: 1, x: 1450, y: 760, s: lerp(2.6, 1, se), r: -9, o: clamp(st * 5) * (1 - p(t, 20.35, 20.5)), blur: (1 - se) * 10 });
+  addShake(t, 19.62, 16, 0.25);
+  // camera
+  const [px, py] = inner(1150, 219);
+  const [mx, my] = inner(885, 400);
+  cam.s = kf(t, [[HOT, 1.0], [17.3, 1.0], [17.9, 1.0], [18.12, 1.3, E.inOutCubic], [18.6, 1.33], [18.88, 1.05, E.outExpo], [19.5, 1.1], [20.35, 1.12], [END, 0.6, E.inExpo]]);
+  cam.fx = kf(t, [[17.9, BX], [18.12, px, E.inOutCubic], [18.6, px], [18.88, mx, E.outExpo], [20.35, mx]]);
+  cam.fy = kf(t, [[17.9, BY], [18.12, py, E.inOutCubic], [18.6, py], [18.88, my, E.outExpo], [20.35, my]]);
+  const win = 1 - E.outExpo(p(t, HOT, HOT + 0.35));
+  cam.fy += win * -400;
+}
+
+function sceneEnd(t) {
+  // three word slams, each on its own colour flood
+  const ws = [['w1', END], ['w2', END + 2 * B], ['w3', END + 4 * B]];
+  ws.forEach(([id, a], i) => {
+    const nxt = i < 2 ? ws[i + 1][1] : LOGO;
+    const on = t >= a - 0.02 && t < nxt;
+    if (!on) { T(id, { o: 0 }); return; }
+    const s = slam(t, a, 0.26, 3.0, 30), z = zthru(t, nxt - 0.16, 0.16, 5);
+    T(id, { c: 1, x: CX, y: CY + 10, s: s.s * lerp(1, 1.06, p(t, a, nxt)) * z.s, o: s.o * z.o, blur: s.blur + z.blur });
+  });
+  // photo montage behind "Discover."
+  const ma = END + 2 * B, mb = END + 4 * B;
+  for (let i = 0; i < 8; i++) {
+    const on = t >= ma && t < mb;
+    if (!on) { T('mo' + i, { o: 0 }); continue; }
+    const ang = i / 8 * Math.PI * 2 + (t - ma) * 0.6, rad = lerp(1300, 760, E.outExpo(p(t, ma, ma + 0.5)));
+    T('mo' + i, { c: 1, x: CX + Math.cos(ang) * rad, y: CY + Math.sin(ang) * rad * 0.55, s: 0.8, r: Math.cos(ang) * 8, o: 0.85 * (1 - p(t, mb - 0.15, mb)) });
+  }
+  // end card
+  const lk = pop(t, LOGO, 2.0, 0.5);
+  const on = t >= LOGO - 0.02;
+  if (!on) return;
+  const drift = lerp(1, 1.03, p(t, LOGO, 25.5));
+  T('logo', { c: 1, x: CX, y: 300, s: clamp(lk, 0, 1.3) * 0.72 * drift, o: clamp((t - LOGO) * 10), r: lerp(-20, 0, clamp(lk)) });
+  const wa = LOGO + 0.1, wk = p(t, wa, wa + 0.42), we = E.outExpo(wk), wy = 560;
+  T('wmain', { c: 1, x: CX, y: wy, s: lerp(2.8, 1, we) * drift, o: clamp(wk * 6), blur: (1 - we) * 6 });
+  for (let i = 0; i < 14; i++) { const f = (i + 1) / 14; T('sm' + i, { c: 1, x: CX, y: wy, s: lerp(2.8, 1, we) * (1 + f * 1.6 * (1 - we)), o: (1 - we) * 0.3 * (1 - f) * clamp(wk * 8) }); }
+  const tg = E.outExpo(p(t, 24.0, 24.5));
+  T('tagline', { c: 1, x: CX, y: 680 + (1 - tg) * 20, o: tg }); $('tagline').style.letterSpacing = lerp(0.6, 0.32, tg).toFixed(3) + 'em';
+  const ck = pop(t, 24.2, 2.2, 0.5);
+  T('cta', { c: 1, x: CX, y: 800, s: clamp(ck, 0, 1.2), o: clamp((t - 24.2) * 8) });
+  T('shine', { x: -200 + ((t - 24.5) % 1.3) / 1.3 * 800, o: t > 24.5 ? 1 : 0 });
+  const fk = E.outExpo(p(t, 24.45, 24.9));
+  T('feat', { c: 1, x: CX, y: 930 + (1 - fk) * 20, o: fk });
+  T('nofee', { o: 0 });
+}
+
+function background(t) {
+  const op = (a, b, f = 0.05) => clamp(Math.min((t - a) / f + 1, (b - t) / f + 1));
+  T('bgDark', { o: t >= CUT && t < D ? 1 : 0 });
+  T('bgTeal', { o: op(END, END + 2 * B) }); T('bgSky', { o: op(END + 2 * B, END + 4 * B) }); T('bgGold', { o: op(END + 4 * B, LOGO) });
+  const sa = t < CUT ? 0.5 : t < D ? 0.15 : (t >= END && t < LOGO ? 0 : 1);
+  stars.draw(t, -t * 40, t * 10, sa);
+  const showF = t >= LOGO - 0.02 || (t >= D && t < 9.3);
+  $('flight').style.opacity = showF ? (t >= LOGO ? E.outCubic(p(t, LOGO, LOGO + 0.6)) : 0.7 * (1 - p(t, 9.0, 9.3))) : 0;
+  if (showF) {
+    const k = t >= LOGO ? p(t, LOGO, 25.5) : p(t, D, 9.6);
+    const L = fLen * lerp(0.05, 0.97, E.outCubic(k));
+    const pt = fpath.getPointAtLength(L), pt2 = fpath.getPointAtLength(Math.min(fLen, L + 4));
+    const ang = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI + 90;
+    $('fplane').setAttribute('transform', `translate(${pt.x.toFixed(1)},${pt.y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+    fpath.style.strokeDashoffset = (-t * 30).toFixed(1);
+  }
+}
+
+function fx(t) {
+  let f = 0;
+  f += flashAt(t, D, 0.95, 0.32) + flashAt(t, LOGO, 0.9, 0.32);
+  for (const a of [END, END + 2 * B, END + 4 * B]) f += flashAt(t, a, 0.6, 0.2);
+  f += flashAt(t, 3.0, 0.18, 0.12) + flashAt(t, 4.15, 0.18, 0.12) + flashAt(t, 5.45, 0.18, 0.12);
+  $('flash').style.opacity = clamp(f).toFixed(3);
+  let rr = -1, rx = CX, ry = CY;
+  for (const a of [D, LOGO]) if (t >= a && t < a + 0.5) { rr = (t - a) / 0.5; ry = a === D ? 380 : 300; }
+  if (rr >= 0) T('ring', { c: 1, x: rx, y: ry, s: lerp(0.3, 11, E.outCubic(rr)), o: (1 - rr) * 0.8 }); else T('ring', { o: 0 });
+  grain.draw(t);
+}
+
+function cursor(t) {
+  const c = cursorAt(t);
+  if (!c) { T('cursor', { o: 0 }); T('cring', { o: 0 }); return; }
+  let press = 0, ring = -1;
+  for (const k of CUR) if (k[3]) { const a = k[0]; press = Math.max(press, p(t, a - 0.04, a) - p(t, a + 0.02, a + 0.12)); if (t >= a && t < a + 0.35) ring = (t - a) / 0.35; }
+  T('cursor', { x: c[0] - 4, y: c[1] - 3, s: 1 - 0.18 * press, o: 1 });
+  if (ring >= 0) T('cring', { c: 1, x: c[0], y: c[1], s: lerp(0.3, 1.6, E.outCubic(ring)), o: 1 - ring }); else T('cring', { o: 0 });
+}
+
+window.seek = function (t) {
+  shake = 0;
+  for (const el of $('hud').children) { el.style.visibility = 'hidden'; el.style.opacity = 0; }
+  const cam = { s: 1, fx: CX, fy: CY };
+  background(t);
+  let hideBrowser = false;
+  if (t < D) sceneIntro(t, cam);
+  else if (t < VIS) { hideBrowser = sceneLogo(t, cam); layoutTabs(t); page('pgHome'); omni('flightdeals.in'); $('browser').style.filter = 'none'; $('content').style.opacity = 1; }
+  else if (t < ESIM) { sceneVisa(t, cam); layoutTabs(t); }
+  else if (t < HOT) {
+    const side = sceneEsim(t, cam); layoutTabs(t);
+    // counters on the right
+    const c1 = p(t, 12.3, 13.2), c2 = p(t, 14.5, 15.6);
+    const n1 = Math.round(lerp(0, 901, E.outCubic(c1))), n2 = Math.round(lerp(0, 175, E.outCubic(c2)));
+    $('cnt1').textContent = n1 >= 901 ? '900+' : n1; $('cnt2').textContent = n2;
+    const vis = side;
+    T('cnt1', { c: 1, x: 1590, y: 330, s: pop(t, 12.3, 2.4, 0.55), o: clamp((t - 12.3) * 6) * vis });
+    T('cnt1l', { c: 1, x: 1590, y: 450, o: E.outExpo(p(t, 12.45, 12.8)) * vis });
+    T('cnt2', { c: 1, x: 1590, y: 640, s: pop(t, 14.5, 2.4, 0.55), o: clamp((t - 14.5) * 6) * vis });
+    T('cnt2l', { c: 1, x: 1590, y: 760, o: E.outExpo(p(t, 14.65, 15.0)) * vis });
+  }
+  else if (t < END) { sceneHotels(t, cam); layoutTabs(t); }
+  $('browser').style.opacity = (t >= D && t < VIS + 0.3) ? E.outCubic(p(t, 9.12, 9.42)).toFixed(3) : 1;
+  if (t >= END) { hideBrowser = true; }
+  sceneEnd(t);
+  $('browser').style.display = hideBrowser ? 'none' : '';
+  cursor(t);
+  captions(t);
+  fx(t);
+  // beat pulse after the drop
+  let bump = 0;
+  if (t > D && t < END) { const k = (t - D) / B; const ph = k - Math.floor(k); bump = Math.exp(-ph * 7) * (Math.floor(k) % 2 === 0 ? 1 : 0.4); }
+  const s0 = cam.s, s = cam.s * (1 + 0.008 * bump);
+  const sx = shake ? (hash(Math.floor(t * 60)) - 0.5) * 2 * shake : 0, sy = shake ? (hash(Math.floor(t * 60) + 0.5) - 0.5) * 2 * shake : 0;
+  const tx = CX - cam.fx * s + sx, ty = CY - cam.fy * s + sy;
+  $('cam').style.transform = `translate3d(${tx.toFixed(2)}px,${ty.toFixed(2)}px,0) scale(${s.toFixed(4)})`;
+  // motion blur from deliberate camera moves only (beat pulse/shake excluded); filter always present
+  const bx0 = CX - cam.fx * s0, by0 = CY - cam.fy * s0;
+  const ps = window.__ps || [s0, bx0, by0];
+  const dz = Math.abs(Math.log(s0) - Math.log(ps[0])) * 160 + Math.hypot(bx0 - ps[1], by0 - ps[2]) * 0.08;
+  window.__ps = [s0, bx0, by0];
+  const cb = dz > 0.6 ? Math.min(12, dz) : 0;
+  $('cam').style.filter = `blur(${cb.toFixed(2)}px)`;
+};
+
+(async () => {
+  setup();
+  // cursor keyframes (scene coords)
+  await E.ready();
+  $('browser').style.left = BL + 'px'; $('browser').style.top = BT + 'px';
+  // measure targets in content coordinates (camera is identity at this point)
+  const cr = $('content').getBoundingClientRect();
+  const M = (pg, sel, dx = 0, dy = 0) => {
+    page(pg); const r = (typeof sel === 'string' ? document.querySelector(sel) : sel).getBoundingClientRect();
+    return inner(r.left - cr.left + r.width / 2 + dx, r.top - cr.top + r.height / 2 + dy);
+  };
+  const navVisa = M('pgHome', '#nav_Visa'), btn = M('pgVisa', '#vbtn'), ch1 = M('pgPlans', '#pch1'), ch2 = M('pgPlans', '#pch2'), ch3 = M('pgPlans', '#pch3');
+  const hsrc = M('pgHotels', '#hbtn'), bf = M('pgHotels', '#cbBf', 0, -232), mapT = M('pgHotels', '#tgMap', 0, -232);
+  page('pgSearch');
+  const P = (x, y) => inner(x, y);
+  CUR = [[9.3, 1300, 900], [9.68, ...navVisa, 1], [10.0, 1200, 640], [10.32, ...btn, 1], [10.7, 1350, 760],
+    [11.6, 1400, 800], [14.7, ...P(600, 600)], [15.0, ...ch1, 1], [15.42, ...ch2, 1], [15.84, ...ch3, 1], [16.2, ...P(900, 500)],
+    [16.8, ...P(1000, 330)], [17.32, ...hsrc, 1], [17.6, ...P(900, 450)], [18.5, ...P(300, 560)], [18.75, ...bf, 1], [18.88, ...mapT, 1], [19.3, ...P(1100, 480)], [20.4, ...P(1150, 500)]];
+  window.__targets = { navVisa, btn, ch1, ch2, ch3, hsrc, bf, mapT };
+  fLen = fpath.getTotalLength();
+  window.seek(0);
+  window.__ready = true;
+})();
+</script>
+</body></html>

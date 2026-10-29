@@ -1,0 +1,690 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<title>FlightDeals 9:16</title>
+<link rel="stylesheet" href="../assets/fonts/local.css">
+<style>
+:root{
+  --ink:#050B1F; --navy:#0C1E45; --navy2:#0A2342; --teal:#239587; --teal2:#2EC4B0; --mint:#5EEAD4;
+  --sky:#0EA5E9; --sky2:#38BDF8; --gold:#FFC21A; --gold2:#F5C451; --coral:#F4775E; --red:#FF4D5E; --off:#F4F7FB;
+  --muted:#5B6B82; --line:#E3E8EF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#050B1F}
+#stage{position:absolute;inset:0;overflow:hidden;font-family:Manrope,sans-serif;color:#fff}
+.A{position:absolute;left:0;top:0}
+.full{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.disp{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;line-height:.9;white-space:nowrap}
+.bgl{position:absolute;inset:0}
+#bgA{background:radial-gradient(1200px 1400px at 50% 38%,#12306B 0%,#0A1D45 45%,#050D26 100%)}
+#bgTeal{background:radial-gradient(1100px 1300px at 50% 40%,#0F5B5E 0%,#0A2C46 50%,#04102A 100%)}
+#bgSky{background:radial-gradient(1100px 1300px at 50% 40%,#0B4F8A 0%,#0A2552 52%,#040E2A 100%)}
+#bgGold{background:radial-gradient(1100px 1300px at 50% 40%,#5A3F14 0%,#23203A 50%,#070C24 100%)}
+#cam{transform-origin:0 0;will-change:transform,filter}
+.num,.lab,.hook,.wm,#price,#sorted,.stampbox,#logo{will-change:transform}
+#flash{background:#fff;opacity:0}
+#vig{background:radial-gradient(1000px 1500px at 50% 50%,transparent 55%,rgba(0,0,0,.55) 100%);pointer-events:none}
+#grain{mix-blend-mode:overlay;opacity:.07}
+/* hook */
+#s0photo{width:1080px;height:1920px;object-fit:cover;transform-origin:50% 50%}
+#s0tint{background:linear-gradient(180deg,rgba(5,11,31,.55) 0%,rgba(8,26,66,.35) 40%,rgba(5,11,31,.9) 100%),linear-gradient(0deg,rgba(14,165,233,.12),rgba(14,165,233,.12))}
+.hook{font-size:220px;color:#fff;text-shadow:0 10px 60px rgba(0,0,0,.45)}
+.q{color:var(--mint)}
+#h2{font-size:64px;font-weight:800;letter-spacing:.06em;white-space:nowrap;text-transform:uppercase}
+#h2 .w{display:inline-block;margin:0 10px}
+#h2 .three{color:var(--gold);font-family:'Space Grotesk';font-size:92px;vertical-align:-6px}
+.tile{width:286px;height:340px;border-radius:44px;background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05));
+  border:2px solid rgba(255,255,255,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 30px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+.tile .ic{width:120px;height:120px;color:#fff}
+.tile .tl{font-weight:800;font-size:38px;letter-spacing:.12em}
+.badge{position:absolute;right:-22px;top:-22px;width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk';font-weight:700;font-size:54px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.badge.qm{background:var(--red)}
+.badge.ok{background:var(--teal2)}
+.badge.ok svg{width:52px;height:52px;color:#fff}
+/* numerals */
+.num{font-size:820px;background:linear-gradient(180deg,#fff 0%,var(--c1) 55%,var(--c2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lab{font-size:190px;color:#fff}
+.sub{font-size:44px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
+/* headline captions */
+.cap{font-weight:800;font-size:70px;white-space:nowrap;text-align:center;padding:22px 40px 28px;border-radius:36px;background:rgba(6,14,38,.8);backdrop-filter:blur(14px);border:2px solid rgba(255,255,255,.12);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.cap .w{display:inline-block;margin:0 9px}
+.cap .hl{font-family:'Space Grotesk';font-weight:700;font-size:104px;color:var(--mint);vertical-align:-8px}
+/* visa UI */
+.card{background:#fff;border-radius:46px;box-shadow:0 50px 120px rgba(0,0,0,.45);color:#0C1E45;overflow:hidden}
+#visaCard{width:920px}
+.vhead{background:linear-gradient(135deg,#0C1E45,#123070);padding:44px 52px 46px;color:#fff;position:relative}
+.chip{display:inline-flex;align-items:center;gap:12px;padding:10px 22px;border-radius:999px;background:rgba(255,255,255,.12);font-size:26px;font-weight:700}
+.chip i{width:12px;height:12px;border-radius:50%;background:var(--mint);display:inline-block}
+.vtitle{font-family:'Space Grotesk';font-weight:700;font-size:62px;margin-top:22px;display:flex;align-items:center;gap:18px}
+.vtitle svg{width:62px;height:62px;color:var(--teal2)}
+.vbody{padding:40px 52px 50px;display:grid;grid-template-columns:1fr 1fr;gap:26px 26px}
+.fld .fl{font-size:25px;font-weight:600;color:var(--muted);margin-bottom:12px}
+.fld .fv{height:100px;border:2px solid var(--line);border-radius:22px;display:flex;align-items:center;gap:16px;padding:0 24px;font-size:36px;font-weight:700;position:relative}
+.fld .fv svg.flag{width:48px;height:32px;border-radius:4px;flex:none}
+.fld .fv .chv{position:absolute;right:20px;width:30px;height:30px;color:#94A3B8}
+.fld .fv .ph{color:#94A3B8;font-weight:600}
+.caret{display:inline-block;width:3px;height:40px;background:var(--teal);margin-left:2px}
+.btn{grid-column:1/3;height:112px;border-radius:26px;background:var(--teal);color:#fff;font-size:40px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:16px;
+  box-shadow:0 14px 40px rgba(35,149,135,.45);position:relative;overflow:hidden}
+.spin{width:44px;height:44px;border-radius:50%;border:5px solid rgba(255,255,255,.35);border-top-color:#fff}
+#visaRes{width:920px;padding:42px 48px 44px}
+.rtop{display:flex;align-items:center;gap:22px}
+.rtop .ri{width:84px;height:84px;border-radius:24px;background:#FFF4E5;color:#E07B12;display:flex;align-items:center;justify-content:center}
+.rtop .ri svg{width:50px;height:50px}
+.rk{font-size:28px;font-weight:700;color:#E07B12}
+.rt{font-family:'Space Grotesk';font-weight:700;font-size:54px;line-height:1.05}
+.tag{display:inline-block;margin-top:18px;padding:8px 18px;border-radius:999px;border:2px solid #F7C99B;color:#C2610C;font-size:22px;font-weight:700}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:30px}
+.st{border:2px solid var(--line);border-radius:22px;padding:18px 20px}
+.st .k{font-size:22px;color:var(--muted);font-weight:600}
+.st .v{font-size:29px;font-weight:800;margin-top:6px;line-height:1.15}
+.docs{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.doc{display:flex;align-items:center;gap:16px;font-size:30px;font-weight:700;color:#24324A}
+.doc .ck{width:52px;height:52px;border-radius:50%;background:#E6F6F3;color:var(--teal);display:flex;align-items:center;justify-content:center;flex:none}
+.doc .ck svg{width:34px;height:34px}
+.stampbox{border:10px solid var(--c);color:var(--c);border-radius:30px;padding:18px 46px 22px;text-align:center;font-family:'Space Grotesk';font-weight:700;
+  background:rgba(5,11,31,.62);backdrop-filter:blur(8px);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.stampbox .big{font-size:120px;line-height:1}
+.stampbox .small{font-size:40px;letter-spacing:.18em;margin-top:6px;font-family:Manrope;font-weight:800}
+#tap{width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.55);border:5px solid #fff;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+#tapRing{width:120px;height:120px;border-radius:50%;border:6px solid #fff}
+.foot{font-size:26px;font-weight:600;color:rgba(255,255,255,.62);white-space:nowrap}
+/* phone */
+#phone{width:540px;height:1100px;border-radius:92px;background:#0B0F1A;padding:16px;box-shadow:0 60px 140px rgba(0,0,0,.6),inset 0 0 0 3px #2A3245,0 0 0 2px #3a4258}
+#screen{position:relative;width:100%;height:100%;border-radius:78px;overflow:hidden;background:linear-gradient(170deg,#0E2A5C 0%,#0A1B3F 60%,#071330 100%)}
+#island{position:absolute;left:50%;top:22px;width:150px;height:44px;border-radius:24px;background:#000;transform:translateX(-50%)}
+.sbar{position:absolute;left:0;right:0;top:24px;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;font-size:28px;font-weight:800}
+.sbar .r{display:flex;align-items:center;gap:12px}
+.sbar .sig{width:42px;height:27px}
+.sbar .ns{font-size:22px;font-weight:700;color:rgba(255,255,255,.7)}
+.sbar .g5{font-size:26px;font-weight:800}
+#qrcard{position:absolute;left:44px;top:200px;width:420px;border-radius:40px;background:#fff;color:#0C1E45;padding:30px 30px 34px;text-align:center}
+#qrcard .qt{font-weight:800;font-size:30px}
+#qrcard .qs{font-weight:600;font-size:22px;color:var(--muted);margin-top:4px}
+#qrbox{position:relative;width:300px;height:300px;margin:22px auto 0;border-radius:18px;overflow:hidden}
+#qrbox svg{width:100%;height:100%}
+#scan{position:absolute;left:-10px;right:-10px;height:8px;background:var(--teal2);box-shadow:0 0 30px 10px rgba(46,196,176,.7)}
+#conn{position:absolute;left:44px;top:200px;width:420px;height:452px;border-radius:40px;background:linear-gradient(160deg,#0F766E,#0B4F8A);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+#conn .cc{width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
+#conn .cc svg{width:96px;height:96px;color:#fff}
+#conn .c1{font-family:'Space Grotesk';font-weight:700;font-size:50px}
+#conn .c2{font-size:24px;font-weight:700;color:rgba(255,255,255,.85)}
+.plans{position:absolute;left:44px;top:700px;width:420px}
+.pl{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.14);border-radius:24px;padding:18px 22px;margin-bottom:14px}
+.pl .a{font-size:24px;font-weight:800}
+.pl .b{font-size:19px;font-weight:600;color:rgba(255,255,255,.7);margin-top:2px}
+.pl .p{font-family:'Space Grotesk';font-weight:700;font-size:38px;color:var(--mint)}
+.bdg{display:inline-block;font-size:16px;font-weight:800;padding:4px 10px;border-radius:999px;margin-right:6px;vertical-align:2px}
+#notif{position:absolute;left:26px;top:86px;width:456px;border-radius:30px;background:rgba(255,255,255,.18);backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.25);padding:20px 22px;display:flex;gap:16px;align-items:center}
+#notif .ni{width:64px;height:64px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+#notif .ni img{width:56px}
+#notif .n1{font-size:22px;font-weight:800}
+#notif .n2{font-size:20px;font-weight:600;color:rgba(255,255,255,.85)}
+#price{font-size:250px;color:var(--gold);text-shadow:0 20px 60px rgba(255,194,26,.25)}
+#pricePre{font-size:66px;font-weight:800;white-space:nowrap}
+.dcard{width:250px;height:330px;border-radius:34px;overflow:hidden;background:#fff;box-shadow:0 30px 70px rgba(0,0,0,.45);color:#0C1E45}
+.dcard img{width:100%;height:220px;object-fit:cover;display:block}
+.dcard .dn{font-weight:800;font-size:26px;padding:12px 18px 0}
+.dcard .dp{display:flex;justify-content:space-between;align-items:baseline;padding:2px 18px}
+.dcard .dp span{font-size:18px;color:var(--muted);font-weight:600}
+.dcard .dp b{font-family:'Space Grotesk';font-size:34px;color:var(--teal)}
+#plane2{width:130px;height:130px;color:var(--gold)}
+/* hotel */
+.hcard{width:880px;height:1160px}
+.hph{position:relative;height:640px;overflow:hidden}
+.hph img{width:100%;height:100%;object-fit:cover;transform-origin:50% 50%}
+.glass{position:absolute;display:flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;background:rgba(10,20,45,.45);backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,.3);color:#fff;font-size:28px;font-weight:800}
+.glass svg{width:30px;height:30px}
+.hbody{padding:34px 44px}
+.hstars{display:flex;gap:6px;color:#F5B301}
+.hstars svg{width:34px;height:34px}
+.hname{font-family:'Space Grotesk';font-weight:700;font-size:54px;margin-top:10px}
+.hloc{font-size:26px;color:var(--muted);font-weight:600;margin-top:4px}
+.amen{display:flex;gap:12px;margin-top:20px}
+.amen span{display:inline-flex;align-items:center;gap:8px;font-size:24px;font-weight:700;color:var(--teal);background:#E6F6F3;padding:8px 16px;border-radius:999px}
+.amen svg{width:26px;height:26px}
+.prow{display:flex;align-items:flex-end;justify-content:space-between;margin-top:30px}
+.old{position:relative;font-size:38px;font-weight:700;color:#94A3B8;display:inline-block}
+.old .strike{position:absolute;left:-6px;right:-6px;top:52%;height:6px;background:var(--red);transform-origin:0 50%;border-radius:3px}
+.new{font-family:'Space Grotesk';font-weight:700;font-size:96px;color:#0C1E45;line-height:1}
+.tot{font-size:24px;color:var(--muted);font-weight:600}
+.book{height:96px;padding:0 40px;border-radius:24px;background:var(--teal);color:#fff;font-weight:800;font-size:34px;display:flex;align-items:center;gap:12px}
+.book svg{width:32px;height:32px}
+.off{width:170px;height:170px;border-radius:50%;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;font-size:62px;box-shadow:0 20px 50px rgba(244,119,94,.5)}
+.rate{position:absolute;right:30px;top:30px;width:110px;height:110px;border-radius:28px;background:var(--teal);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;font-size:48px;line-height:1}
+.rate small{font-family:Manrope;font-size:18px;font-weight:700;opacity:.85;margin-top:4px}
+#live{display:inline-flex;align-items:center;gap:14px;padding:14px 28px;border-radius:999px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);font-weight:800;font-size:34px;letter-spacing:.14em}
+#live i{width:20px;height:20px;border-radius:50%;background:#22E58B;box-shadow:0 0 18px #22E58B}
+/* end */
+#sorted{font-size:170px}
+#logo{width:560px}
+.wm{font-size:126px;color:#fff}
+.wm .in{color:var(--teal2)}
+#tagline{font-size:36px;font-weight:800;letter-spacing:.32em;color:rgba(255,255,255,.85);white-space:nowrap}
+#cta{width:800px;justify-content:center;height:132px;padding:0 40px;border-radius:999px;background:linear-gradient(135deg,#2EC4B0,#239587);display:flex;align-items:center;gap:20px;font-size:44px;font-weight:800;white-space:nowrap;box-shadow:0 24px 70px rgba(46,196,176,.45);overflow:hidden;position:relative}
+#cta svg{width:46px;height:46px}
+#shine{position:absolute;top:-20px;bottom:-20px;width:120px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg)}
+#nofee{font-size:34px;font-weight:700;color:rgba(255,255,255,.75);white-space:nowrap}
+#ring{width:200px;height:200px;border-radius:50%;border:14px solid var(--mint);opacity:0}
+#wmark{font-size:30px;font-weight:800;letter-spacing:.12em;color:rgba(255,255,255,.55)}
+</style></head>
+<body>
+<div id="stage">
+  <div class="bgl" id="bgA"></div><div class="bgl" id="bgTeal"></div><div class="bgl" id="bgSky"></div><div class="bgl" id="bgGold"></div>
+  <canvas id="stars" class="full" width="1080" height="1920"></canvas>
+  <svg id="flight" class="full" viewBox="0 0 1080 1920">
+    <path id="fpath" d="M -80 1520 C 260 1200, 520 1650, 760 1150 S 1060 560, 1180 420" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 22"/>
+    <g id="fplane"><g transform="translate(-34,-34) scale(2.85)" style="color:#FFC21A"><path fill="currentColor" d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></g></g>
+  </svg>
+
+  <div id="cam" class="full">
+    <!-- S0 HOOK -->
+    <div id="s0" class="full">
+      <div id="s0bg" class="full"><img id="s0photo" src="../assets/img/plane.jpg"><div id="s0tint" class="full"></div></div>
+      <div id="h1a" class="A disp hook">FLYING</div>
+      <div id="h1b" class="A disp hook">ABROAD<span class="q">?</span></div>
+      <div id="h2" class="A"><span class="w">Don't</span><span class="w">forget</span><span class="w">these</span><span class="w three">3</span></div>
+    </div>
+
+    <!-- tiles shared by S0 + S4 -->
+    <div id="tiles" class="full">
+      <div id="t1" class="A tile"><div class="ic" id="ic1"></div><div class="tl">VISA</div><div class="badge qm" id="b1q">?</div><div class="badge ok" id="b1k"></div></div>
+      <div id="t2" class="A tile"><div class="ic" id="ic2"></div><div class="tl">DATA</div><div class="badge qm" id="b2q">?</div><div class="badge ok" id="b2k"></div></div>
+      <div id="t3" class="A tile"><div class="ic" id="ic3"></div><div class="tl">HOTEL</div><div class="badge qm" id="b3q">?</div><div class="badge ok" id="b3k"></div></div>
+    </div>
+
+    <!-- S1 VISA -->
+    <div id="s1" class="full">
+      <div id="n1" class="A disp num" style="--c1:#5EEAD4;--c2:#239587">01</div>
+      <div id="l1" class="A disp lab">VISA</div>
+      <div id="u1" class="A sub" style="color:var(--mint)">Entry rules for your passport</div>
+      <div id="visaCard" class="A card">
+        <div class="vhead"><div class="chip"><i></i>New · Visa vertical</div><div class="vtitle" id="vt"></div></div>
+        <div class="vbody">
+          <div class="fld"><div class="fl">Passport / Citizenship</div><div class="fv" id="fPass"></div></div>
+          <div class="fld"><div class="fl">Destination</div><div class="fv" id="fDest"></div></div>
+          <div class="fld"><div class="fl">Purpose</div><div class="fv" id="fPur">Tourism</div></div>
+          <div class="fld"><div class="fl">Travel date</div><div class="fv"><span class="ph">dd-mm-yyyy</span></div></div>
+          <div class="btn" id="vbtn"><span id="vbtnTxt">Check requirements</span><div class="spin" id="vspin"></div></div>
+        </div>
+      </div>
+      <div id="visaRes" class="A card">
+        <div class="rtop"><div class="ri" id="riIcon"></div><div><div class="rk">Visa required</div><div class="rt">Visa on Arrival / e-Visa</div></div></div>
+        <div class="stats">
+          <div class="st"><div class="k">Stay duration</div><div class="v">Up to 15–30 days</div></div>
+          <div class="st"><div class="k">Processing</div><div class="v">On arrival or 1–3 days</div></div>
+          <div class="st"><div class="k">Fees</div><div class="v">~THB 2,000 (VoA)</div></div>
+        </div>
+        <div class="docs" id="docs"></div>
+      </div>
+      <div id="stamp1" class="A stampbox" style="--c:#2EC4B0"><div class="big">SORTED</div><div class="small">VISA ✓</div></div>
+      <div id="foot1" class="A foot">*Indicative guidance. Always verify with the official embassy.</div>
+    </div>
+
+    <!-- S2 DATA -->
+    <div id="s2" class="full">
+      <div id="n2" class="A disp num" style="--c1:#38BDF8;--c2:#1E6BFF">02</div>
+      <div id="l2" class="A disp lab">DATA</div>
+      <div id="u2" class="A sub" style="color:var(--sky2)">Travel eSIMs · 175 destinations</div>
+      <div id="dcards" class="full"></div>
+      <div id="plane2" class="A"></div>
+      <div id="phone" class="A">
+        <div id="screen">
+          <div class="sbar"><span>9:41</span><span class="r"><span class="ns" id="ns">No SIM</span><span class="g5" id="g5">5G</span><span class="sig" id="sig"></span></span></div>
+          <div id="island"></div>
+          <div id="qrcard"><div class="qt">Thailand eSIM</div><div class="qs">Scan to install · Unlimited 4G/5G</div><div id="qrbox"><div id="qrsvg"></div><div id="scan"></div></div></div>
+          <div id="conn"><div class="cc" id="connIc"></div><div class="c1">Connected</div><div class="c2">Unlimited · 4G/5G · Roaming</div></div>
+          <div class="plans" id="plans">
+            <div class="pl"><div><div class="a"><span class="bdg" style="background:#1E6BFF">Best Overall</span>Global · 130+</div><div class="b">Unlimited · 1 day · 5G</div></div><div class="p">₹334</div></div>
+            <div class="pl"><div><div class="a"><span class="bdg" style="background:#239587">Cheapest</span>Thailand</div><div class="b">Unlimited · 1 day · 5G</div></div><div class="p">₹67</div></div>
+            <div class="pl"><div><div class="a">Asia · 10+ regions</div><div class="b">Unlimited · 1 day · 5G</div></div><div class="p">₹67</div></div>
+          </div>
+          <div id="notif"><div class="ni"><img src="../assets/img/logo_mark.png"></div><div><div class="n1">Welcome to Thailand</div><div class="n2">eSIM active · You're online</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 HOTELS -->
+    <div id="s3" class="full">
+      <div id="n3" class="A disp num" style="--c1:#FFD86B;--c2:#F4775E">03</div>
+      <div id="l3" class="A disp lab">HOTELS</div>
+      <div id="u3" class="A sub" style="color:var(--gold2)">Compare stays by price & rating</div>
+      <div id="hc3" class="A card hcard"><div class="hph"><img src="../assets/img/bali.jpg"></div></div>
+      <div id="hc2" class="A card hcard"><div class="hph"><img src="../assets/img/thailand.jpg"></div></div>
+      <div id="hc1" class="A card hcard">
+        <div class="hph"><img id="hphoto" src="../assets/img/hotel.jpg">
+          <div class="glass" style="left:30px;top:30px" id="hloc"></div>
+          <div class="rate">8.6<small>Guest</small></div>
+        </div>
+        <div class="hbody">
+          <div class="hstars" id="hstars"></div>
+          <div class="hname">Sithala Villa Seminyak</div>
+          <div class="hloc">Bali · Best available rate · 3 nights</div>
+          <div class="amen" id="amen"></div>
+          <div class="prow">
+            <div><div class="old" id="old">₹72,556<div class="strike" id="strike"></div></div><div class="new" id="newp">₹25,615</div><div class="tot">total · 3 nights</div></div>
+            <div class="book" id="book">BOOK NOW</div>
+          </div>
+        </div>
+      </div>
+      <div id="off" class="A off">-55%</div>
+      <div id="stamp3" class="A stampbox" style="--c:#FFC21A"><div class="big">₹0</div><div class="small">BOOKING FEES</div></div>
+      <div id="foot3" class="A foot">Example deal from a live search. Prices change in real time.</div>
+    </div>
+
+    <!-- S4 END -->
+    <div id="s4" class="full">
+      <div id="sorted" class="A disp">All sorted.</div>
+      <div id="smear" class="full"></div>
+      <img id="logo" class="A" src="../assets/img/logo_mark.png">
+      <div id="wmain" class="A disp wm">FlightDeals<span class="in">.in</span></div>
+      <div id="tagline" class="A">COMPARE · DISCOVER · SAVE</div>
+      <div id="cta" class="A"><div id="shine"></div>Search on flightdeals.in<span id="ctaArr"></span></div>
+      <div id="nofee" class="A">No booking fees, ever.</div>
+    </div>
+
+    <div id="tap" class="A"></div><div id="tapRing" class="A"></div>
+  </div>
+
+
+  <div id="hud" class="full">
+    <div id="k1" class="A cap"><span class="w">Know</span><span class="w">the</span><span class="w">rules</span><span class="w">in</span><br><span class="w hl">ONE</span><span class="w hl">search</span></div>
+    <div id="pricePre" class="A">e-SIMs from just</div>
+    <div id="price" class="A disp">₹50</div>
+    <div id="k2" class="A cap"><span class="w">Online</span><span class="w">the</span><span class="w">second</span><br><span class="w hl" style="color:var(--sky2)">you land</span></div>
+    <div id="live" class="A"><i></i>LIVE PRICES</div>
+    <div id="k3" class="A cap"><span class="w">Zero</span><span class="w">booking</span><span class="w hl" style="color:var(--gold)">fees.</span></div>
+  </div>
+  <div id="ring" class="A"></div>
+  <div id="flash" class="full"></div>
+  <div id="vig" class="full"></div>
+  <canvas id="grain" class="full" width="1080" height="1920"></canvas>
+  <div id="wmark" class="A">FLIGHTDEALS.IN</div>
+</div>
+
+<script src="../common/engine.js"></script>
+<script src="../common/ui.js"></script>
+<script>
+const {clamp, lerp, p, kf, spring, sp, T, $, show, hash} = E;
+const W = 1080, H = 1920, CX = 540, CY = 960;
+window.DURATION = 18.5;
+const B = 60 / 140, D = 6 * B;           // beat, drop
+const bt = k => D + k * B;                // beat k after drop
+const S1 = D, S2 = 6.0, S3 = 6.0 + 12 * B, S4 = 6.0 + 20 * B;  // 2.571, 6.0, 11.143, 14.571
+const LOGO = S4 + 2 * B;                  // 15.429
+
+// ---------- setup ----------
+function setup() {
+  $('ic1').innerHTML = I.passport(1.6); $('ic2').innerHTML = I.sim(1.6); $('ic3').innerHTML = I.bed(1.6);
+  for (const k of [1, 2, 3]) $('b' + k + 'k').innerHTML = I.check(3.2);
+  $('vt').innerHTML = I.stamp(2) + 'Visa & entry requirements';
+  $('fPass').innerHTML = `<svg class="flag" viewBox="0 0 30 20">${I.flagIN().replace(/^<svg[^>]*>|<\/svg>$/g, '')}</svg><span>India</span><span class="chv">${I.chev()}</span>`;
+  $('fDest').innerHTML = `<svg class="flag" viewBox="0 0 30 20">${I.flagTH().replace(/^<svg[^>]*>|<\/svg>$/g, '')}</svg><span id="destTxt"></span><span class="caret" id="dcaret"></span><span class="chv">${I.chev()}</span>`;
+  $('fPur').innerHTML = `<span>Tourism</span><span class="chv">${I.chev()}</span>`;
+  $('riIcon').innerHTML = I.stamp(2);
+  const docs = ['Passport valid 6+ months', 'Return ticket', 'Hotel booking', 'Proof of funds'];
+  $('docs').innerHTML = docs.map((d, i) => `<div class="doc" id="doc${i}"><div class="ck">${I.check(3)}</div>${d}</div>`).join('');
+  $('qrsvg').innerHTML = I.qr(29, 11); $('connIc').innerHTML = I.check(3); $('sig').innerHTML = I.signal();
+  $('plane2').innerHTML = I.plane();
+  const dest = [['Thailand', '₹67', 'thailand'], ['Japan', '₹67', 'japan'], ['UAE', '₹95', 'dubai'], ['Singapore', '₹67', 'singapore'], ['France', '₹50', 'paris'], ['UK', '₹50', 'london']];
+  $('dcards').innerHTML = dest.map((d, i) => `<div class="A dcard" id="dc${i}"><img src="../assets/img/${d[2]}.jpg"><div class="dn">${d[0]}</div><div class="dp"><span>from</span><b>${d[1]}</b></div></div>`).join('');
+  $('hloc').innerHTML = I.pin(2.4) + 'Seminyak, Bali';
+  $('hstars').innerHTML = I.star().repeat(4);
+  $('amen').innerHTML = `<span>${I.coffee()}Breakfast</span><span>${I.wifi()}Free Wi-Fi</span>`;
+  $('book').innerHTML = 'BOOK NOW' + I.ext();
+  $('ctaArr').innerHTML = I.arrow();
+  // smear copies of the wordmark
+  let sm = ''; for (let i = 0; i < 14; i++) sm += `<div class="A disp wm smc" id="sm${i}">FlightDeals<span class="in">.in</span></div>`;
+  $('smear').innerHTML = sm;
+}
+
+function bakeNumeral(el) {
+  const txt = el.textContent, cs = getComputedStyle(el);
+  const c1 = cs.getPropertyValue('--c1').trim(), c2 = cs.getPropertyValue('--c2').trim();
+  const fs = 820, SC = 1.5, pad = 90;
+  const m = document.createElement('canvas').getContext('2d');
+  m.font = `700 ${fs}px 'Space Grotesk'`; m.letterSpacing = `${-0.02 * fs}px`;
+  const mt = m.measureText(txt);
+  const w = Math.ceil(mt.width) + pad * 2, hgt = Math.ceil(mt.actualBoundingBoxAscent + mt.actualBoundingBoxDescent) + pad * 2;
+  const cv = document.createElement('canvas'); cv.width = w * SC; cv.height = hgt * SC;
+  cv.style.width = w + 'px'; cv.style.height = hgt + 'px'; cv.style.display = 'block';
+  const x = cv.getContext('2d'); x.scale(SC, SC);
+  x.font = m.font; x.letterSpacing = m.letterSpacing; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  const top = pad, base = pad + mt.actualBoundingBoxAscent;
+  const g = x.createLinearGradient(0, top, 0, base + mt.actualBoundingBoxDescent);
+  g.addColorStop(0, '#ffffff'); g.addColorStop(0.55, c1); g.addColorStop(1, c2);
+  x.shadowColor = 'rgba(0,0,0,0.4)'; x.shadowBlur = 60; x.shadowOffsetY = 26;
+  x.fillStyle = g; x.fillText(txt, w / 2, base);
+  el.textContent = ''; el.appendChild(cv);
+  el.style.background = 'none'; el.style.webkitBackgroundClip = 'initial'; el.style.backgroundClip = 'initial'; el.style.color = 'transparent';
+  el.style.lineHeight = '0';
+}
+const stars = new E.Stars($('stars'), 260, 3);
+const grain = new E.Grain($('grain'), 22);
+const fpath = $('fpath'); let fLen = 0;
+
+// ---------- helpers ----------
+// slam: big punch-in from scale `from` with blur, returns {s, o, blur}
+function slam(t, a, dur = 0.28, from = 2.6, blurMax = 26) {
+  const k = p(t, a, a + dur), e = E.outExpo(k);
+  return { s: lerp(from, 1, e), o: clamp(k * 4), blur: (1 - e) * blurMax };
+}
+// zoom-through exit: scale up past the camera
+function zthru(t, a, dur = 0.22, to = 7) {
+  const k = p(t, a, a + dur), e = E.inExpo(k);
+  return { s: lerp(1, to, e), o: 1 - clamp((k - 0.45) / 0.55), blur: e * 30 };
+}
+function pop(t, a, f = 2.6, d = 0.42) { return clamp(sp(t, a, f, d), 0, 2); }
+function words(id, times, t, rise = 60) {
+  const ws = $(id).querySelectorAll('.w');
+  ws.forEach((w, i) => {
+    const a = times[i]; const k = p(t, a, a + 0.22), e = E.outBack(k, 2.2);
+    w.style.display = t >= a ? 'inline-block' : 'none';
+    w.style.opacity = clamp(k * 3).toFixed(3);
+    w.style.transform = `translateY(${((1 - e) * rise).toFixed(1)}px) scale(${lerp(0.7, 1, E.outCubic(k)).toFixed(3)})`;
+    w.style.filter = k < 1 ? `blur(${((1 - k) * 10).toFixed(1)}px)` : 'none';
+  });
+}
+let shake = 0, camBump = 0;
+function addShake(t, a, amp = 18, dur = 0.25) { if (t >= a && t < a + dur) shake += amp * (1 - (t - a) / dur); }
+function flashAt(t, a, peak = 0.9, dur = 0.28) { return t >= a ? peak * Math.exp(-(t - a) / dur * 4) : 0; }
+
+// ---------- scenes ----------
+function scene0(t, cam) {
+  const on = t < S1 + 0.02; show('s0', on); if (!on) return;
+  // photo ken burns + suck-in before the drop
+  const kb = lerp(1.18, 1.32, p(t, 0, D));
+  T('s0photo', { s: kb, x: lerp(0, -30, p(t, 0, D)) });
+  $('s0photo').style.filter = `brightness(${lerp(0.55, 0.85, E.outCubic(p(t, 0, 0.5))).toFixed(3)}) saturate(1.1)`;
+  const a = slam(t, 0.06, 0.26, 2.8, 30), b = slam(t, 0.44, 0.26, 2.8, 30);
+  const up = E.outExpo(p(t, 1.02, 1.42));
+  T('h1a', { c: 1, x: CX, y: lerp(720, 470, up), s: a.s * lerp(1, 0.66, up), o: a.o, blur: a.blur });
+  T('h1b', { c: 1, x: CX, y: lerp(930, 610, up), s: b.s * lerp(1, 0.66, up), o: b.o, blur: b.blur });
+  words('h2', [1.15, 1.36, 1.62, 1.84], t, 70);
+  T('h2', { c: 1, x: CX, y: 800, o: 1 });
+  addShake(t, 0.08, 16, 0.2); addShake(t, 0.46, 16, 0.2);
+  // suck-in before drop
+  const v = E.inExpo(p(t, D - 0.3, D));
+  T('s0', { s: 1 - v * 0.18, blur: v * 16, bright: 1 - v * 0.5 });
+  cam.s *= lerp(1, 1.06, E.inOutCubic(p(t, 1.1, D - 0.3)));
+}
+
+function tiles(t, cam) {
+  const inHook = t >= 1.2 && t < S1 + 0.02, inEnd = t >= S4 && t < LOGO + 0.05;
+  show('tiles', inHook || inEnd); if (!(inHook || inEnd)) return;
+  const xs = [205, 540, 875];
+  for (let i = 0; i < 3; i++) {
+    const id = 't' + (i + 1);
+    if (inHook) {
+      const a = 1.29 + i * B; const s = pop(t, a, 2.4, 0.42);
+      const v = E.inExpo(p(t, D - 0.3, D));
+      T(id, { c: 1, x: lerp(xs[i], CX, v), y: lerp(1180, CY, v), s: s * (1 - v * 0.75), o: clamp((t - a) * 8) * (1 - v), r: lerp(-8 + i * 8, 0, E.outCubic(p(t, a, a + .4))), blur: v * 14 });
+      const pulse = 1 + 0.08 * Math.max(0, Math.sin((t - a) * 14));
+      T('b' + (i + 1) + 'q', { s: pop(t, a + 0.12, 3, 0.4) * pulse, o: 1 });
+      T('b' + (i + 1) + 'k', { s: 0, o: 0 });
+    } else {
+      const a = S4 + 0.02; const s = pop(t, a + i * 0.06, 2.3, 0.5);
+      const v = E.inExpo(p(t, LOGO - 0.2, LOGO));
+      T(id, { c: 1, x: lerp(xs[i], CX, v), y: lerp(1060, 860, v), s: s * (1 - v * 0.85), o: clamp((t - a) * 6) * (1 - v), blur: v * 18 });
+      const ck = S4 + 0.07 + i * (B / 2);
+      const flip = p(t, ck, ck + 0.12);
+      T('b' + (i + 1) + 'q', { s: 1 - E.inCubic(flip), o: 1 - flip });
+      T('b' + (i + 1) + 'k', { s: pop(t, ck + 0.06, 3, 0.38), o: clamp((t - ck) * 10) });
+    }
+  }
+}
+
+function numeral(t, ids, a, labAt, exitAt, accent) {
+  const [n, l, u] = ids;
+  const s = slam(t, a, 0.3, 3.2, 34), z = zthru(t, exitAt, 0.22, 7);
+  const drift = lerp(1, 1.07, p(t, a, exitAt));
+  T(n, { c: 1, x: CX, y: 760, s: s.s * drift * z.s, o: s.o * z.o, blur: s.blur + z.blur });
+  const ls = slam(t, labAt, 0.24, 2.4, 22);
+  T(l, { c: 1, x: CX, y: lerp(1260, 1700, E.inExpo(p(t, exitAt, exitAt + .22))), s: ls.s * lerp(1, 2.4, E.inExpo(p(t, exitAt, exitAt + .22))), o: ls.o * z.o, blur: ls.blur + z.blur * .6 });
+  const uk = E.outExpo(p(t, labAt + 0.1, labAt + 0.45));
+  T(u, { c: 1, x: CX, y: lerp(1430, 1400, uk), o: uk * z.o, blur: z.blur * .4 });
+}
+
+function scene1(t, cam) {
+  const on = t >= S1 - 0.01 && t < S2 + 0.02; show('s1', on); if (!on) return;
+  const ex = 3.72;
+  numeral(t, ['n1', 'l1', 'u1'], S1, 3.36, ex);
+  // UI card
+  const ci = E.outExpo(p(t, 3.78, 4.25));
+  const cardY = 980, back = E.outExpo(p(t, 4.62, 5.05));
+  T('visaCard', { c: 1, x: CX, y: lerp(cardY + 120, cardY, ci) - back * 150, s: lerp(0.5, 1, ci) * lerp(1, 0.88, back), o: clamp((t - 3.78) * 6), blur: (1 - ci) * 20, bright: lerp(1, 0.82, back) });
+  // typing destination
+  const dest = E.typed('Thailand', t, 3.98, 26);
+  const dt = $('destTxt'); if (dt.textContent !== dest) dt.textContent = dest;
+  $('dcaret').style.opacity = (t > 3.9 && t < 4.4 && Math.floor(t * 4) % 2 === 0) ? 1 : 0;
+  // tap to button
+  const press = p(t, 4.45, 4.52), rel = p(t, 4.52, 4.66);
+  $('vbtn').style.transform = `scale(${(1 - 0.05 * E.outCubic(press) + 0.05 * E.outCubic(rel)).toFixed(3)})`;
+  const loading = t > 4.48 && t < 4.66;
+  $('vbtnTxt').style.display = loading ? 'none' : ''; $('vspin').style.display = loading ? '' : 'none';
+  $('vspin').style.transform = `rotate(${(t * 900) % 360}deg)`;
+  // result card springs out
+  const rk = pop(t, 4.66, 2.2, 0.55);
+  T('visaRes', { c: 1, x: CX, y: lerp(1250, 1230, clamp(rk, 0, 1.2)), s: lerp(0.4, 1, clamp(rk, 0, 1.2)), o: clamp((t - 4.66) * 8), blur: (1 - clamp(rk)) * 12 });
+  for (let i = 0; i < 4; i++) {
+    const a = 5.05 + i * 0.15; const d = $('doc' + i);
+    const k = pop(t, a, 3, 0.45);
+    d.style.opacity = clamp((t - a) * 8).toFixed(3);
+    d.querySelector('.ck').style.transform = `scale(${k.toFixed(3)})`;
+    d.style.transform = `translateX(${((1 - clamp(k)) * 30).toFixed(1)}px)`;
+  }
+  // headline
+  words('k1', [4.22, 4.42, 4.58, 4.9, 5.05, 5.26], t, 70);
+  T('k1', { c: 1, x: CX, y: 330, o: clamp((t - 4.2) * 7) * (1 - p(t, 5.85, 5.95)) });
+  // stamp
+  const st = p(t, 5.6, 5.72), se = E.outExpo(st);
+  T('stamp1', { c: 1, x: 790, y: 1530, s: lerp(2.6, 1, se), r: -12, o: clamp(st * 5), blur: (1 - se) * 10 });
+  addShake(t, 5.66, 22, 0.25);
+  T('foot1', { c: 1, x: CX, y: 1700, o: clamp((t - 4.7) * 3) * (1 - p(t, 5.85, 5.95)) });
+  // camera: screen-studio zooms
+  const zoom = kf(t, [[3.78, 1], [4.2, 1], [4.42, 1.24, E.inOutCubic], [4.66, 1.24], [5.0, 0.98, E.outExpo], [5.55, 1.03], [5.85, 1.0], [6.0, 3.2, E.inExpo]]);
+  const fy = kf(t, [[3.78, CY], [4.2, CY], [4.42, 1290, E.inOutCubic], [4.66, 1290], [5.0, 1010, E.outExpo], [5.55, 1060], [5.85, 1200], [6.0, 1530, E.inExpo]]);
+  const fx = kf(t, [[5.55, CX], [5.85, 620], [6.0, 790, E.inExpo]]);
+  cam.s *= zoom; cam.fx = fx; cam.fy = fy;
+}
+
+function scene2(t, cam) {
+  const on = t >= S2 - 0.01 && t < S3 + 0.02; show('s2', on); if (!on) return;
+  const ex = 7.12;
+  numeral(t, ['n2', 'l2', 'u2'], S2, 6.70, ex);
+  // phone
+  const pi = E.outExpo(p(t, 7.2, 7.7));
+  const whip = E.inExpo(p(t, 10.92, S3));
+  const phY = 1180;
+  const px = CX - whip * 1500;
+  T('phone', { c: 1, x: px, y: lerp(phY + 200, phY, pi), s: lerp(0.55, 1, pi), o: clamp((t - 7.2) * 6), blur: (1 - pi) * 18 + whip * 26 });
+  // QR card + scan
+  const scanK = p(t, 7.72, 8.28);
+  T('scan', { y: lerp(0, 296, E.inOutCubic(scanK)), o: scanK > 0 && scanK < 1 ? 1 : 0 });
+  const cflip = p(t, 8.86, 9.06);
+  T('qrcard', { s: 1 - 0.1 * E.inCubic(cflip), o: 1 - cflip, sy: 1 - E.inCubic(cflip) * 0.6 });
+  const cc = pop(t, 8.9, 2.4, 0.5);
+  T('conn', { s: lerp(0.7, 1, clamp(cc)), o: clamp((t - 8.9) * 8) });
+  T('connIc', { s: pop(t, 9.0, 3, 0.4) });
+  // status bar
+  const online = t >= 8.92;
+  $('ns').style.display = online ? 'none' : ''; $('g5').style.display = online ? '' : 'none';
+  const bars = $('sig').querySelectorAll('rect');
+  bars.forEach((r, i) => r.setAttribute('opacity', online ? (t > 8.92 + i * 0.08 ? 1 : 0.25) : 0.25));
+  // plans
+  const pls = $('plans').querySelectorAll('.pl');
+  pls.forEach((el, i) => { const a = 9.08 + i * 0.1, k = E.outExpo(p(t, a, a + 0.4)); el.style.opacity = k.toFixed(3); el.style.transform = `translateY(${((1 - k) * 40).toFixed(1)}px)`; });
+  // notification
+  const nk = pop(t, 10.12, 2.4, 0.55);
+  T('notif', { y: lerp(-160, 0, clamp(nk, 0, 1.1)), o: clamp((t - 10.12) * 8) });
+  // headline: price roll
+  const pre = E.outExpo(p(t, 7.42, 7.7));
+  const up2 = E.outExpo(p(t, 9.3, 9.65));
+  T('pricePre', { c: 1, x: CX, y: lerp(330, 300, pre) - up2 * 400, o: pre * (1 - up2) });
+  const rollK = p(t, 7.62, 8.44);
+  const val = Math.round(lerp(999, 50, E.outQuart(rollK)));
+  $('price').textContent = '₹' + E.fmtINR(val);
+  const land = slam(t, 8.44, 0.2, 1.35, 0);
+  const rollBlur = rollK > 0 && rollK < 1 ? (1 - rollK) * 8 : 0;
+  T('price', { c: 1, x: CX, y: 500 - up2 * 400, s: (rollK < 1 ? 0.92 : land.s) * lerp(0.6, 1, pre), o: pre * (1 - up2), blur: rollBlur });
+  addShake(t, 8.46, 16, 0.2);
+  words('k2', [9.42, 9.62, 9.8, 10.2], t, 70);
+  T('k2', { c: 1, x: CX, y: 360, o: clamp((t - 9.4) * 7) * (1 - whip) });
+  // destination cards fan around the phone
+  const pos = [[150, 760, -12], [930, 720, 10], [110, 1260, -8], [970, 1230, 9], [190, 1700, -6], [900, 1720, 7]];
+  for (let i = 0; i < 6; i++) {
+    const a = 9.62 + i * 0.09; const k = pop(t, a, 2.2, 0.55);
+    const [x, y, r] = pos[i];
+    T('dc' + i, { c: 1, x: lerp(CX, x, clamp(k, 0, 1.15)) - whip * 1500, y: lerp(phY, y, clamp(k, 0, 1.15)), s: lerp(0.3, 0.86, clamp(k, 0, 1.1)), r: r * clamp(k), o: clamp((t - a) * 8), blur: whip * 26 });
+  }
+  // plane lands into phone along a curve
+  const pk = p(t, 9.42, 10.05), pe = E.inOutCubic(pk);
+  const bx = lerp(-120, CX, pe), by = lerp(260, phY - 380, pe) - Math.sin(pe * Math.PI) * 120;
+  T('plane2', { c: 1, x: bx, y: by, r: 90 + lerp(-10, 30, pe), s: lerp(1.3, 0.25, E.inCubic(pk)), o: pk > 0 && pk < 1 ? 1 : 0 });
+  // camera
+  cam.s *= kf(t, [[7.2, 1], [7.7, 1.0], [8.0, 1.08], [8.45, 1.0, E.outExpo], [9.3, 1.02], [9.7, 0.94, E.outExpo], [10.9, 0.97]]);
+}
+
+function scene3(t, cam) {
+  const on = t >= S3 - 0.01 && t < S4 + 0.02; show('s3', on); if (!on) return;
+  const ex = 12.2;
+  numeral(t, ['n3', 'l3', 'u3'], S3, 11.88, ex);
+  const ci = E.outExpo(p(t, 12.28, 12.8));
+  const out = E.inExpo(p(t, 14.38, S4));
+  const cy = 1110;
+  T('hc1', { c: 1, x: CX, y: lerp(cy + 160, cy, ci), s: lerp(0.5, 1, ci) * lerp(1, 0.25, out), o: clamp((t - 12.28) * 6) * (1 - out), blur: (1 - ci) * 18 + out * 16 });
+  const b1 = E.outExpo(p(t, 12.45, 13.0)), b2 = E.outExpo(p(t, 12.55, 13.1));
+  T('hc2', { c: 1, x: CX + 70 * b1, y: cy - 40 * b1, s: 0.92 * lerp(0.5, 1, b1) * (1 - out * .8), r: 5 * b1, o: clamp((t - 12.45) * 5) * 0.9 * (1 - out) });
+  T('hc3', { c: 1, x: CX - 70 * b2, y: cy - 70 * b2, s: 0.86 * lerp(0.5, 1, b2) * (1 - out * .8), r: -6 * b2, o: clamp((t - 12.55) * 5) * 0.75 * (1 - out) });
+  T('hphoto', { s: lerp(1.12, 1.22, p(t, 12.2, 14.5)) });
+  // live pill
+  const lk = pop(t, 12.77, 2.6, 0.5);
+  T('live', { c: 1, x: CX, y: 330, s: lk, o: clamp((t - 12.77) * 8) * (1 - p(t, 13.7, 13.8)) });
+  $('live').querySelector('i').style.opacity = (0.4 + 0.6 * Math.abs(Math.sin(t * 6))).toFixed(2);
+  // strike + new price + badge
+  T('strike', { sx: E.outCubic(p(t, 12.95, 13.2)) });
+  const np = slam(t, 13.2, 0.2, 1.6, 8);
+  T('newp', { s: t < 13.2 ? 1 : np.s, blur: t < 13.2 ? 0 : np.blur });
+  const ok = pop(t, 13.4, 2.8, 0.42);
+  T('off', { c: 1, x: 900, y: 1520 - 0 , s: ok * (1 - out), r: -12 * clamp(ok), o: clamp((t - 13.4) * 8) * (1 - out) });
+  addShake(t, 13.22, 10, 0.2);
+  words('k3', [13.8, 14.0, 14.24], t, 70);
+  T('k3', { c: 1, x: CX, y: 340, o: clamp((t - 13.78) * 7) * (1 - out) });
+  const st = p(t, 14.06, 14.18), se = E.outExpo(st);
+  T('stamp3', { c: 1, x: 300, y: 860, s: lerp(2.6, 1, se) * (1 - out * .7), r: -12, o: clamp(st * 5) * (1 - out), blur: (1 - se) * 10 });
+  addShake(t, 14.1, 22, 0.25);
+  T('foot3', { c: 1, x: CX, y: 1770, o: clamp((t - 12.8) * 3) * (1 - out) });
+  cam.s *= kf(t, [[12.28, 1], [12.85, 1], [13.1, 1.2, E.inOutCubic], [13.6, 1.2], [13.9, 0.97, E.outExpo], [14.38, 1.0]]);
+  cam.fy = kf(t, [[12.85, CY], [13.1, 1560, E.inOutCubic], [13.6, 1560], [13.9, CY, E.outExpo]]);
+  cam.fx = kf(t, [[12.85, CX], [13.1, 400, E.inOutCubic], [13.6, 420], [13.9, CX, E.outExpo]]);
+}
+
+function scene4(t, cam) {
+  const on = t >= S4 - 0.01; show('s4', on); if (!on) return;
+  const sk = slam(t, S4 + 0.02, 0.26, 2.2, 20);
+  const v = E.inExpo(p(t, LOGO - 0.2, LOGO));
+  T('sorted', { c: 1, x: CX, y: 560, s: sk.s * (1 - v * 0.6), o: sk.o * (1 - v), blur: sk.blur + v * 14 });
+  // logo
+  const lk = pop(t, LOGO, 2.0, 0.5);
+  const pulse = 1 + 0.06 * Math.exp(-Math.max(0, t - bt(34)) * 6) * (t > bt(34) ? 1 : 0);
+  T('logo', { c: 1, x: CX, y: lerp(760, 720, E.outCubic(p(t, LOGO, LOGO + 2))), s: clamp(lk, 0, 1.3) * pulse, o: clamp((t - LOGO) * 10), r: lerp(-25, 0, clamp(lk)) });
+  // wordmark zoom smear
+  const wa = LOGO + 0.12, wk = p(t, wa, wa + 0.42), we = E.outExpo(wk);
+  const wy = 1080;
+  T('wmain', { c: 1, x: CX, y: wy, s: lerp(2.8, 1, we), o: clamp(wk * 6), blur: (1 - we) * 6 });
+  for (let i = 0; i < 14; i++) {
+    const f = (i + 1) / 14;
+    T('sm' + i, { c: 1, x: CX, y: wy, s: lerp(2.8, 1, we) * (1 + f * 1.6 * (1 - we)), o: (1 - we) * 0.32 * (1 - f) * clamp(wk * 8) });
+  }
+  const tg = E.outExpo(p(t, 15.95, 16.5));
+  T('tagline', { c: 1, x: CX, y: 1210 + (1 - tg) * 30, o: tg });
+  $('tagline').style.letterSpacing = lerp(0.6, 0.32, tg).toFixed(3) + 'em';
+  const ck = pop(t, 16.28, 2.2, 0.5);
+  T('cta', { c: 1, x: CX, y: 1420, s: clamp(ck, 0, 1.2), o: clamp((t - 16.28) * 8) });
+  T('shine', { x: -200 + ((t - 16.6) % 1.4) / 1.4 * 1100, o: t > 16.6 ? 1 : 0 });
+  T('nofee', { c: 1, x: CX, y: 1550, o: E.outExpo(p(t, 16.6, 17.0)) });
+  cam.s *= lerp(1, 1.05, E.inOutCubic(p(t, LOGO, 18.5)));
+}
+
+function background(t) {
+  const op = (a, b, f = 0.25) => clamp(Math.min((t - a) / f + 1, (b - t) / f + 1));
+  T('bgTeal', { o: op(S1, S2) }); T('bgSky', { o: op(S2, S3) }); T('bgGold', { o: op(S3, S4) });
+  // stars visible except during the photo hook
+  stars.draw(t, -t * 40, t * 18, t < D ? 0.35 : 1);
+  // dotted flight path + plane: hook and end card
+  const showF = t > LOGO - 0.05 || t < D;
+  $('flight').style.opacity = showF ? (t < D ? 0.6 : E.outCubic(p(t, LOGO, LOGO + 0.6))) : 0;
+  if (showF) {
+    const k = t < D ? p(t, 0, D) : p(t, LOGO, 18.5);
+    const L = fLen * (t < D ? E.outCubic(k) : lerp(0.05, 0.98, E.outCubic(k)));
+    const pt = fpath.getPointAtLength(L), pt2 = fpath.getPointAtLength(Math.min(fLen, L + 4));
+    const ang = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI + 90;
+    $('fplane').setAttribute('transform', `translate(${pt.x.toFixed(1)},${pt.y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+    fpath.style.strokeDashoffset = (-t * 30).toFixed(1);
+  }
+}
+
+function tapIndicator(t) {
+  // visa tap
+  const a = 4.18, c = 4.45;
+  const k = E.inOutCubic(p(t, a, c));
+  const vis = t > a - 0.05 && t < 4.75;
+  const x = lerp(860, 600, k), y = lerp(1560, 1300, k);
+  const pr = p(t, c, c + 0.08);
+  T('tap', { c: 1, x, y, s: vis ? lerp(1, 0.75, pr) + 0.25 * p(t, c + 0.08, c + 0.2) : 0, o: vis ? 0.9 * (1 - p(t, 4.62, 4.75)) : 0 });
+  const rk = p(t, c, c + 0.4);
+  T('tapRing', { c: 1, x, y, s: lerp(0.6, 2.4, E.outCubic(rk)), o: rk > 0 && rk < 1 ? (1 - rk) : 0 });
+}
+
+function fx(t) {
+  let f = 0;
+  f += flashAt(t, D, 0.95, 0.32);
+  f += flashAt(t, S2, 0.7, 0.25);
+  f += flashAt(t, S3, 0.7, 0.25);
+  f += flashAt(t, LOGO, 0.9, 0.32);
+  f += flashAt(t, 8.44, 0.25, 0.15);
+  $('flash').style.opacity = clamp(f).toFixed(3);
+  // shock ring at drops
+  let rr = -1;
+  for (const a of [D, S2, S3, LOGO]) if (t >= a && t < a + 0.5) rr = (t - a) / 0.5;
+  if (rr >= 0) T('ring', { c: 1, x: CX, y: t >= LOGO ? 760 : 820, s: lerp(0.3, 9, E.outCubic(rr)), o: (1 - rr) * 0.8 }); else T('ring', { o: 0 });
+  $('ring').style.borderColor = t >= S3 && t < S4 ? '#FFC21A' : t >= S2 && t < S3 ? '#38BDF8' : '#5EEAD4';
+  grain.draw(t);
+  const wmOn = t > D + 0.6 && t < LOGO - 0.3;
+  T('wmark', { c: 1, x: CX, y: 1820, o: wmOn ? 0.9 : 0 });
+}
+
+window.seek = function (t) {
+  shake = 0;
+  for (const el of $('hud').children) { el.style.visibility = 'hidden'; el.style.opacity = 0; }
+  const cam = { s: 1, fx: CX, fy: CY };
+  background(t);
+  scene0(t, cam); tiles(t, cam); scene1(t, cam); scene2(t, cam); scene3(t, cam); scene4(t, cam);
+  tapIndicator(t);
+  fx(t);
+  // beat pulse after the drop (kick on every beat)
+  let bump = 0;
+  if (t > D && t < LOGO + 3) { const k = (t - D) / B; const ph = k - Math.floor(k); bump = Math.exp(-ph * 7) * (Math.floor(k) % 2 === 0 ? 1 : 0.5); }
+  const s0 = cam.s, s = cam.s * (1 + 0.012 * bump);
+  const sx = shake ? (hash(Math.floor(t * 60)) - 0.5) * 2 * shake : 0;
+  const sy = shake ? (hash(Math.floor(t * 60) + 0.5) - 0.5) * 2 * shake : 0;
+  const tx = CX - cam.fx * s + sx, ty = CY - cam.fy * s + sy;
+  // velocity blur from camera scale changes
+  $('cam').style.transform = `translate3d(${tx.toFixed(2)}px,${ty.toFixed(2)}px,0) scale(${s.toFixed(4)})`;
+  // motion blur from deliberate camera moves only (not the beat pulse); filter stays on so the layer never re-rasterises mid-shot
+  const dz = Math.abs(Math.log(s0) - Math.log(window.__ps || s0)); window.__ps = s0;
+  const cb = dz > 0.004 ? Math.min(14, dz * 160) : 0;
+  $('cam').style.filter = `blur(${cb.toFixed(2)}px)`;
+};
+
+(async () => {
+  setup();
+  await E.ready();
+  fLen = fpath.getTotalLength();
+  for (const id of ['n1', 'n2', 'n3']) bakeNumeral($(id));
+  window.seek(0);
+  window.__ready = true;
+})();
+</script>
+</body></html>

@@ -1,0 +1,13 @@
+{
+  "name": "flightdeals-ad-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Code-driven motion-graphics ads for FlightDeals.in (9:16 Reels + 16:9 YouTube): HTML compositions rendered frame-by-frame with Playwright, synthesized BGM/SFX, Fish Audio voiceover.",
+  "scripts": {
+    "audio": "python audio/make_audio.py v && python audio/make_audio.py h",
+    "render": "bash final.sh"
+  },
+  "dependencies": {
+    "playwright-core": "^1.49.1"
+  }
+}
